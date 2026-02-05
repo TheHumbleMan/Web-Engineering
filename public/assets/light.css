@@ -298,7 +298,6 @@ body {
 
 .main-container{
     width: 100%;
-
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
     gap: 28px;
