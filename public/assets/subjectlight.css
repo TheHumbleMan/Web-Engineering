@@ -5,4 +5,230 @@
     --border-input: #e1e1e1;
     --accent-blue: #007bff;
     --accent-hover: #0056b3;
+
+    /* Toggle Styles */
+    --dark: #111111;
+    --sun: #ffd700;
+    --sun-shadow: #987416;
+    --moon: #dddddd;
+    --moon-shadow: #808080;
+    --star: #ffffff;
+    --crater: #535370;
+    --shadow-01: #80808077;
+    --shadow-02: #ffffff22;
+    --shadow-03: #555555;
+    --white: #ffffff;
+    --background-day: linear-gradient(skyblue, cadetblue);
+    --background-night: linear-gradient(-45deg, #222, #000030);
+}
+
+html, body { height: 100%; margin: 0; }
+main { flex: 1; overflow-y: auto; }
+
+body {
+    background: var(--bg-body);
+    color: var(--text-main);
+}
+
+/* Header / Nav */
+header{
+    border-bottom: 1px solid var(--border-input);
+    height: 60px;
+    background: var(--bg-body);
+}
+
+header nav{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 1rem;
+}
+
+header nav a{
+    color: var(--text-main);
+    text-decoration: none;
+    padding: 10px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-input);
+    border-radius: 10px;
+    transition: border-color .2s, color .2s, background-color .2s;
+}
+
+header nav a:hover{
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+}
+
+/* Main Grid */
+main {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background-color: var(--bg-body);
+    justify-content: space-between;
+    min-height: 100%;
+    width: 100%;
+    gap: 2rem;
+    box-sizing: border-box;
+}
+
+/* Topbanner */
+main .topbanner {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 5%;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-input);
+    margin-bottom: 10px;
+}
+
+main .topbanner h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+main .topbanner button {
+    background-color: var(--accent-blue);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+main .topbanner button:hover {
+    background-color: var(--accent-hover);
+}
+
+/* Subjects */
+.subject {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-input);
+    border-radius: 15px;
+    height: 150px;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.subject:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-5px);
+}
+
+/* ===== Toggle (gleiches Design wie dark) ===== */
+.theme-toggle{
+    position: absolute;
+    right: 4%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: inline-block;
+}
+
+.theme-toggle input{
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.theme-toggle .slider{
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 14px;
+    transform: scale(3);
+    cursor: pointer;
+
+    background: var(--background-day);
+    box-shadow: inset 0 0 3px rgba(0,0,0,0.25);
+    transition: 0.4s;
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.25));
+    overflow: hidden;
+    z-index: 1;
+}
+
+.theme-toggle .slider.round{ border-radius: 34px; }
+.theme-toggle .slider.round::before{ border-radius: 50%; }
+
+.theme-toggle .slider::before{
+    content: "";
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--sun);
+    transition: 0.4s;
+    box-shadow:
+            inset 0 -1px 2px var(--sun-shadow),
+            0 1px 2px var(--shadow-01),
+            0 0 0 5px var(--shadow-02),
+            0 0 0 10px var(--shadow-02),
+            5px 0 0 10px var(--shadow-02);
+}
+
+/* Checked -> Nacht */
+.theme-toggle input:checked + .slider{
+    background: var(--background-night);
+    filter: drop-shadow(0 0 2px var(--white));
+}
+
+.theme-toggle input:checked + .slider::before{
+    background: var(--moon);
+    transform: translateX(18px);
+    box-shadow:
+            inset 0 -1px 2px var(--moon-shadow),
+            0 1px 2px var(--shadow-03),
+            0 0 0 5px var(--shadow-02),
+            0 0 0 10px var(--shadow-02),
+            -5px 0 0 10px var(--shadow-02);
+}
+
+.theme-toggle .slider::after{
+    content: "";
+    position: absolute;
+    background: var(--crater);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    bottom: 65%;
+    right: 20%;
+    box-shadow: -8px 7px 0 3px var(--crater), 2px 10px 0 var(--crater);
+    transition: .4s;
+    transform: scale(0) rotate(360deg);
+    filter: saturate(.75);
+}
+
+.theme-toggle input:checked + .slider::after{
+    transform: scale(1) rotate(-24deg);
+}
+
+.theme-toggle .star{
+    transform: scale(0);
+    transition: .4s;
+}
+
+.theme-toggle input:checked + .slider .star{
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-bottom: 7px solid var(--star);
+    transform: rotate(35deg) scale(.3) translate(50%);
+}
+
+.theme-toggle input:checked + .slider .star:last-child{
+    transform: scale(.4) translate(225%, 300%);
+}
+
+footer {
+    background-color: var(--bg-body);
 }

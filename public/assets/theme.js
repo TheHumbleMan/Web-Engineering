@@ -1,26 +1,25 @@
 (() => {
-    const toggle = document.querySelector('#dark-mode-switch input[type="checkbox"]');
+    const toggle = document.querySelector('#toggle');
     const themeLink = document.querySelector('#theme-style');
     const KEY = 'theme';
 
     if (!toggle || !themeLink) return;
 
-    const apply = (isDark) => {
-        // Hier wird der Pfad zur CSS-Datei getauscht
-        const newHref = isDark ? '/assets/dark.css' : '/assets/light.css';
-        themeLink.setAttribute('href', newHref);
+    const isSubjects = location.pathname.startsWith('/subjects');
 
-        // Optional: Klasse am Body trotzdem lassen, falls du CSS-Logik darauf stützt
+    const css = isSubjects
+        ? { dark: '/assets/subjectdark.css', light: '/assets/subjectlight.css' }
+        : { dark: '/assets/dark.css',       light: '/assets/light.css' };
+
+    const apply = (isDark) => {
+        themeLink.href = isDark ? css.dark : css.light;
         document.body.classList.toggle('dark', isDark);
     };
 
     const saved = localStorage.getItem(KEY);
-    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const systemDark = matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = saved ? saved === 'dark' : systemDark;
 
-    // Logik: Erst schauen, ob was gespeichert ist, sonst System-Standard
-    const isDark = saved ? (saved === 'dark') : systemDark;
-
-    // Initial anwenden
     apply(isDark);
     toggle.checked = isDark;
 
