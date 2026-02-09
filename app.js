@@ -20,6 +20,9 @@ app.get("/auth/register", (req, res) => {
 app.get("/about", (req, res) => {
     res.render("about", { error: req.query.error, success: req.query.success });
 })
+app.get("/subjects", (req, res) => {
+    res.render("subjects", { error: req.query.error, success: req.query.success });
+})
 
 // Dummy-POST (später dein echtes Backend-Login)
 app.post("/auth/login", (req, res) => {
