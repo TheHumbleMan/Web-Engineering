@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>Angeklicktes Fach</title>
+    <link rel="stylesheet" href="/assets/subjectdark.css">
+</head>
+<body>
+<header>
+    <nav>
+        <a href="google.com">Notenübersicht</a>
+        <a href="google.com">Lernplan</a>
+        <a href="subjects">Zurück zur Übersicht </a>
+        <a href="google.com">Abmelden</a>
+
+        <label class="theme-toggle">
+            <input type="checkbox" id="toggle">
+            <span class="slider round">
+                <div class="background"></div>
+                <div class="star"></div>
+                <div class="star"></div>
+            </span>
+        </label>
+
+    </nav>
+</header>
+<main>
+    <div class="topbanner">
+        <h1>Name des angeklickten Fachs</h1> <!-- hier backend Code einfügen mit Variablen und so, dass Name variabel wird -->
+        <button>Create subject</button>
+    </div>
+    <div style="width:100%; min-height:90vh; display:flex;">
+        <!--Linker Teil für die Notizen und co-->
+        <div style="flex:2; background-color:blue; padding:10px; box-sizing:border-box;">
+            <div class="subject" style="width:100%; height:100%; flex-direction:column; align-items:flex-start; justify-content:flex-start; padding: 10px; box-sizing:border-box;">
+                <h2>Notizen</h2>
+                <textarea placeholder="Notizen..." style="width: 100%; height:100%; box-sizing:border-box; background-color:lightblue; border-radius: 15px;"></textarea>
+            </div>
+        </div>
+
+        <!--Rechter Teil für Prüfungsdatum, Timer und Todos-->
+        <div style="flex:1; background-color:red; display:flex; flex-direction:column; gap: 10px; padding:10px">
+
+            <div id="prüfungs-container" style="flex:1; box-sizing:border-box; flex-direction:column; display:flex; align-items:flex-start; padding:10px;" class="subject">
+                <h2>Prüfungsdatum:</h2>
+                <h2>Note: </h2>
+            </div>
+
+            <div id="pomodoroContainer" style="flex:1; box-sizing:border-box; flex-direction:row; display:flex; align-items:flex-start; padding:10px;" class="subject">
+                <h2 style="align-self:center">Pomodoro:</h2>
+                <div class="pomodoro">
+                    <div class="time" id="pomo-time">25:00</div>
+                    <div class="controls">
+                        <button id="start">Start</button>
+                        <button id="pause">Pause</button>
+                        <button id="reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="todosContainer" style="flex:5; box-sizing:border-box; flex-direction:column; display:flex; align-items:flex-start; justify-content:flex-start; padding:10px; gap:10px" class="subject">
+                
+                <div style="display: flex; flex-direction: row; align-items: center; justify-content:space-between; width:100%">
+                    <h2>Todos:</h2>
+                    <button>Neues Todo</button>
+                </div>
+
+                <div class="singletodo" style="min-width:100%; display:flex; align-items:center">
+                    <input type="checkbox" id="notify" style="align-self: flex-start;">
+                    <div>
+                        Aufgabe 1 machen
+                    </div>
+                    <div style="margin-left:auto; align-self:flex-start; white-space:nowrap">Fällig: 12.12.2012</div>
+                </div>
+
+                <div class="singletodo" style="min-width:100%; display:flex; align-items:center">
+                    <input type="checkbox" id="notify" style="align-self: flex-start;">
+                    <div>
+                        Aufgabe 2 machen
+                    </div>
+                    <div style="margin-left:auto; align-self:flex-start; white-space:nowrap">Fällig: 12.12.2012</div>
+                </div>
+
+                <div class="singletodo" style="min-width:100%; display:flex; align-items:center">
+                    <input type="checkbox" id="notify" style="align-self: flex-start;">
+                    <div>
+                        Aufgabe 3 machen
+                    </div>
+                    <div style="margin-left:auto; align-self:flex-start; white-space:nowrap">Fällig: 12.12.2012</div>
+                </div>
+
+                <div class="singletodo" style="min-width:100%; display:flex; align-items:center">
+                    <input type="checkbox" id="notify" style="align-self: flex-start;">
+                    <div>
+                        Aufgabe 4 machen
+                    </div>
+                    <div style="margin-left:auto; align-self:flex-start; white-space:nowrap">Fällig: 12.12.2012</div>
+                </div>
+
+                <div class="singletodo" style="min-width:100%; display:flex; align-items:center">
+                    <input type="checkbox" id="notify" style="align-self: flex-start;">
+                    <div>
+                        Das ist nummer fünf aber mit einem super langem text dass man sich überlgt, in welcher hinsicht ist das ein todo und nicht die volle notiz?
+                    </div>
+                    <div style="margin-left:auto; align-self:flex-start; white-space:nowrap">Fällig: 12.12.2012</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<footer>
+</footer>
+</body>
+</html>
+
+<script>
+    let duration = 25 * 60; // 25 Minuten
+    let remaining = duration;
+    let timer = null;
+
+    const timeEl = document.getElementById("pomo-time");
+
+    function updateDisplay() {
+        const min = Math.floor(remaining / 60);
+        const sec = remaining % 60;
+        timeEl.textContent =
+        String(min).padStart(2, "0") + ":" +
+        String(sec).padStart(2, "0");
+    }
+
+    document.getElementById("start").onclick = () => {
+        if (timer) return;
+        timer = setInterval(() => {
+        if (remaining <= 0) {
+            clearInterval(timer);
+            timer = null;
+            alert("Pomodoro fertig 🍅");
+            return;
+        }
+        remaining--;
+        updateDisplay();
+        }, 1000);
+    };
+
+    document.getElementById("pause").onclick = () => {
+        clearInterval(timer);
+        timer = null;
+    };
+
+    document.getElementById("reset").onclick = () => {
+        clearInterval(timer);
+        timer = null;
+        remaining = duration;
+        updateDisplay();
+    };
+
+    updateDisplay();
+</script>

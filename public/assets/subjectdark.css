@@ -55,14 +55,16 @@ header nav:active{
 
 }
 main {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
     background-color: var(--bg);
-    justify-content: space-between;
     min-height: 100%;
     width: 100%;
     gap: 2rem;
     box-sizing: border-box;
+}
+.gridAddon{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: space-between;
 }
 main .topbanner {
     grid-column: 1 / -1;
@@ -116,4 +118,33 @@ main .topbanner button:hover {
 
 footer {
     background-color: var(--bg);
+}
+
+/*Pomodoro*/
+.pomodoro {
+  padding: 16px;
+  border-radius: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  align-self: center;
+}
+
+.pomodoro .time {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.pomodoro .controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.pomodoro button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
 }

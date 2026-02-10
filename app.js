@@ -23,6 +23,9 @@ app.get("/about", (req, res) => {
 app.get("/subjects", (req, res) => {
     res.render("subjects", { error: req.query.error, success: req.query.success });
 })
+app.get("/subject", (req, res) => {
+    res.render("subject", { error: req.query.error, success: req.query.success });
+})
 
 // Dummy-POST (später dein echtes Backend-Login)
 app.post("/auth/login", (req, res) => {
