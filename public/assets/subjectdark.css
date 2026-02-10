@@ -20,20 +20,36 @@
     --white: #ffffff;
     --background-day: linear-gradient(skyblue, cadetblue);
     --background-night: linear-gradient(-45deg, #222, #000030);
+
+    /* Responsive Toggle Größen (passt auf klein/groß automatisch) */
+    --toggle-w: clamp(36px, 6vw, 90px);
+    --toggle-h: calc(var(--toggle-w) * 0.46);   /* ~14/30 */
+    --toggle-pad: calc(var(--toggle-h) * 0.14); /* ~2/14 */
+    --knob: calc(var(--toggle-h) - 2 * var(--toggle-pad));
+    --knob-shift: calc(var(--toggle-w) - var(--knob) - 2 * var(--toggle-pad));
 }
-html, body { height: 100%; margin: 0; }
-main { flex: 1; overflow-y: auto; }
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
 
 body {
     background: var(--bg);
     color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-header{
+/* HEADER / NAV */
+header {
     border-bottom: 1px solid var(--border);
-    height: 60px;
+    height: 8%;
+    min-height: 60px; /* verhindert Winz-Header auf sehr kleinen Höhen */
 }
-header nav{
+
+header nav {
     position: relative;
     display: flex;
     justify-content: center;
@@ -41,39 +57,44 @@ header nav{
     width: 100%;
     height: 100%;
     gap: 1rem;
+    box-sizing: border-box;
+    padding: 0 5%;
 }
-header nav a{
+
+header nav a {
     color: var(--text);
     text-decoration: none;
     padding: 10px;
     background-color: var(--card);
     border-radius: 10px;
 }
-header nav:active{
-    text-decoration: none;
 
+header nav a:active {
+    text-decoration: none;
 }
+
+/* MAIN GRID (falls du es auf anderen Seiten nutzt) */
 main {
+    flex: 1;
+    overflow-y: auto;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     background-color: var(--bg);
+    justify-content: space-between;
     min-height: 100%;
     width: 100%;
     gap: 2rem;
     box-sizing: border-box;
 }
-.gridAddon{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    justify-content: space-between;
-}
+
 main .top-banner {
     grid-column: 1 / -1;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     padding: 30px 5%;
     color: var(--text);
-
     border-bottom: 1px solid var(--border);
     margin-bottom: 10px;
 }
@@ -82,7 +103,6 @@ main .top-banner h1 {
     margin: 0;
     font-size: 2.5rem;
 }
-
 
 main .top-banner button {
     background-color: var(--accent);
@@ -115,32 +135,54 @@ main .top-banner button:hover {
     transform: translateY(-5px);
 }
 
-.theme-toggle{
+/* TIMER PAGE */
+#main-timer-page {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#timer-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--card);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+}
+
+#timer-box:hover {
+    border: 1px solid var(--accent);
+}
+
+/* THEME TOGGLE */
+.theme-toggle {
     position: absolute;
     right: 4%;
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
-}
-
-
-.theme-toggle{
     display: inline-block;
 }
 
-.theme-toggle input{
+.theme-toggle input {
     opacity: 0;
     width: 0;
     height: 0;
 }
 
-.theme-toggle .slider{
+.theme-toggle .slider {
     position: relative;
     display: inline-block;
-    width: 30px;
-    height: 14px;
-    transform: scale(3);
+    width: var(--toggle-w);
+    height: var(--toggle-h);
     cursor: pointer;
+
+    /* WICHTIG: kein scale() mehr */
+    transform: none;
 
     background: var(--background-day);
     box-shadow: inset 0 0 3px;
@@ -150,109 +192,105 @@ main .top-banner button:hover {
     z-index: 1;
 }
 
-.theme-toggle .slider.round{ border-radius: 34px; }
-.theme-toggle .slider.round::before{ border-radius: 50%; }
+.theme-toggle .slider.round {
+    border-radius: 999px;
+}
 
-.theme-toggle .slider::before{
+.theme-toggle .slider.round::before {
+    border-radius: 50%;
+}
+
+.theme-toggle .slider::before {
     content: "";
     position: absolute;
-    height: 10px;
-    width: 10px;
-    left: 2px;
-    bottom: 2px;
+    width: var(--knob);
+    height: var(--knob);
+    left: var(--toggle-pad);
+    bottom: var(--toggle-pad);
     background-color: var(--sun);
     transition: 0.4s;
     box-shadow:
             inset 0 -1px 2px var(--sun-shadow),
             0 1px 2px var(--shadow-01),
-            0 0 0 5px var(--shadow-02),
-            0 0 0 10px var(--shadow-02),
-            5px 0 0 10px var(--shadow-02);
+            0 0 0 0.35em var(--shadow-02),
+            0 0 0 0.7em var(--shadow-02),
+            0.35em 0 0 0.7em var(--shadow-02);
 }
 
-.theme-toggle input:checked + .slider{
+.theme-toggle input:checked + .slider {
     background: var(--background-night);
     filter: drop-shadow(0 0 2px var(--white));
 }
 
-.theme-toggle input:checked + .slider::before{
+.theme-toggle input:checked + .slider::before {
     background: var(--moon);
-    transform: translateX(18px);
+    transform: translateX(var(--knob-shift));
     box-shadow:
             inset 0 -1px 2px var(--moon-shadow),
             0 1px 2px var(--shadow-03),
-            0 0 0 5px var(--shadow-02),
-            0 0 0 10px var(--shadow-02),
-            -5px 0 0 10px var(--shadow-02);
+            0 0 0 0.35em var(--shadow-02),
+            0 0 0 0.7em var(--shadow-02),
+            -0.35em 0 0 0.7em var(--shadow-02);
 }
 
-.theme-toggle .slider::after{
+.theme-toggle .slider::after {
     content: "";
     position: absolute;
     background: var(--crater);
-    width: 4px;
-    height: 4px;
+    width: calc(var(--toggle-h) * 0.28);
+    height: calc(var(--toggle-h) * 0.28);
     border-radius: 50%;
     bottom: 65%;
     right: 20%;
-    box-shadow: -8px 7px 0 3px var(--crater), 2px 10px 0 var(--crater);
+    box-shadow:
+            calc(var(--toggle-h) * -0.55) calc(var(--toggle-h) * 0.5) 0 calc(var(--toggle-h) * 0.2) var(--crater),
+            calc(var(--toggle-h) * 0.14)  calc(var(--toggle-h) * 0.7) 0 0 var(--crater);
     transition: .4s;
     transform: scale(0) rotate(360deg);
     filter: saturate(.75);
 }
 
-.theme-toggle input:checked + .slider::after{
+.theme-toggle input:checked + .slider::after {
     transform: scale(1) rotate(-24deg);
 }
 
-.theme-toggle .star{
+.theme-toggle .star {
     transform: scale(0);
     transition: .4s;
 }
 
-.theme-toggle input:checked + .slider .star{
+.theme-toggle input:checked + .slider .star {
     position: absolute;
     width: 0;
     height: 0;
-    border: 10px solid transparent;
-    border-bottom: 7px solid var(--star);
+    border: calc(var(--toggle-h) * 0.7) solid transparent;
+    border-bottom: calc(var(--toggle-h) * 0.5) solid var(--star);
     transform: rotate(35deg) scale(.3) translate(50%);
 }
 
-.theme-toggle input:checked + .slider .star:last-child{
+.theme-toggle input:checked + .slider .star:last-child {
     transform: scale(.4) translate(225%, 300%);
 }
 
-
+/* FOOTER */
 footer {
     background-color: var(--bg);
 }
 
-/*Pomodoro*/
-.pomodoro {
-  padding: 16px;
-  border-radius: 12px;
-  width: 100%;
-  box-sizing: border-box;
-  text-align: center;
-  align-self: center;
-}
+/* OPTIONAL: bessere Darstellung auf kleinen Screens */
+@media (max-width: 600px) {
+    header nav {
+        gap: 0.5rem;
+        padding: 0 3%;
+    }
 
-.pomodoro .time {
-  font-size: 3rem;
-  font-weight: bold;
-  margin-bottom: 12px;
-}
+    header nav a {
+        padding: 8px;
+        border-radius: 8px;
+    }
 
-.pomodoro .controls {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-}
-
-.pomodoro button {
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
+    main {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
 }

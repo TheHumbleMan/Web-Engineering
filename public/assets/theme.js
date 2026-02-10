@@ -2,17 +2,25 @@
     const toggle = document.querySelector('#toggle');
     const themeLink = document.querySelector('#theme-style');
     const KEY = 'theme';
-
     if (!toggle || !themeLink) return;
 
-    const isSubjects = location.pathname.startsWith('/subjects');
+    const THEME_SETS = {
+        default: { dark: '/assets/dark.css',        light: '/assets/light.css' },
+        subjects: { dark: '/assets/subjectdark.css', light: '/assets/subjectlight.css' },
+    };
 
-    const css = isSubjects
-        ? { dark: '/assets/subjectdark.css', light: '/assets/subjectlight.css' }
-        : { dark: '/assets/dark.css',       light: '/assets/light.css' };
+    const SUBJECTS_PREFIXES = [
+        '/subjects',
+        '/timer',
+    ];
+
+    const path = location.pathname;
+    const set = SUBJECTS_PREFIXES.some(p => path.startsWith(p))
+        ? THEME_SETS.subjects
+        : THEME_SETS.default;
 
     const apply = (isDark) => {
-        themeLink.href = isDark ? css.dark : css.light;
+        themeLink.href = isDark ? set.dark : set.light;
         document.body.classList.toggle('dark', isDark);
     };
 
