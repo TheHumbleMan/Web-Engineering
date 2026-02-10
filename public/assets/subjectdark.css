@@ -112,7 +112,7 @@ main .top-banner button:hover {
     border-color: var(--accent);
     transform: translateY(-5px);
 }
-/* Toggle-Container (bei dir im nav absolut rechts) */
+
 .theme-toggle{
     position: absolute;
     right: 4%;
@@ -121,25 +121,23 @@ main .top-banner button:hover {
     z-index: 10;
 }
 
-/* Label als "Switch-Wrapper" */
+
 .theme-toggle{
     display: inline-block;
 }
 
-/* input unsichtbar */
 .theme-toggle input{
     opacity: 0;
     width: 0;
     height: 0;
 }
 
-/* Slider (dein span.slider) */
 .theme-toggle .slider{
     position: relative;
     display: inline-block;
     width: 30px;
     height: 14px;
-    transform: scale(3);           /* optional: macht ihn groß */
+    transform: scale(3);
     cursor: pointer;
 
     background: var(--background-day);
@@ -153,7 +151,6 @@ main .top-banner button:hover {
 .theme-toggle .slider.round{ border-radius: 34px; }
 .theme-toggle .slider.round::before{ border-radius: 50%; }
 
-/* Sonne/Mond (Knopf) */
 .theme-toggle .slider::before{
     content: "";
     position: absolute;
@@ -171,7 +168,6 @@ main .top-banner button:hover {
             5px 0 0 10px var(--shadow-02);
 }
 
-/* Checked -> Nacht */
 .theme-toggle input:checked + .slider{
     background: var(--background-night);
     filter: drop-shadow(0 0 2px var(--white));
@@ -188,7 +184,6 @@ main .top-banner button:hover {
             -5px 0 0 10px var(--shadow-02);
 }
 
-/* Krater (nur im Nachtmodus sichtbar) */
 .theme-toggle .slider::after{
     content: "";
     position: absolute;
@@ -208,7 +203,6 @@ main .top-banner button:hover {
     transform: scale(1) rotate(-24deg);
 }
 
-/* Sterne (deine div.star im span.slider) */
 .theme-toggle .star{
     transform: scale(0);
     transition: .4s;
