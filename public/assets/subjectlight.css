@@ -75,7 +75,7 @@ main {
 }
 
 /* Topbanner */
-main .topbanner {
+main .top-banner {
     grid-column: 1 / -1;
     display: flex;
     justify-content: space-between;
@@ -86,12 +86,12 @@ main .topbanner {
     margin-bottom: 10px;
 }
 
-main .topbanner h1 {
+main .top-banner h1 {
     margin: 0;
     font-size: 2.5rem;
 }
 
-main .topbanner button {
+main .top-banner button {
     background-color: var(--accent-blue);
     color: #fff;
     border: none;
@@ -102,7 +102,7 @@ main .topbanner button {
     transition: background-color 0.2s, opacity 0.2s;
 }
 
-main .topbanner button:hover {
+main .top-banner button:hover {
     background-color: var(--accent-hover);
 }
 
