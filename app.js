@@ -23,16 +23,12 @@ app.get("/about", (req, res) => {
 app.get("/subjects", (req, res) => {
     res.render("subjects", { error: req.query.error, success: req.query.success });
 })
-<<<<<<< HEAD
 app.get("/subject", (req, res) => {
     res.render("subject", { error: req.query.error, success: req.query.success });
 })
-
-=======
 app.get("/timer", (req, res) => {
     res.render("timer", { error: req.query.error, success: req.query.success });
 })
->>>>>>> 5b699f2 (dark-mode toggle)
 // Dummy-POST (später dein echtes Backend-Login)
 app.post("/auth/login", (req, res) => {
     const { username, password } = req.body;
