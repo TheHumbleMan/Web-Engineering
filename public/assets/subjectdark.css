@@ -34,14 +34,13 @@ header{
     height: 60px;
 }
 header nav{
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 100%;
     gap: 1rem;
-}
-.theme-toggle{
 }
 header nav a{
     color: var(--text);
@@ -66,7 +65,7 @@ main {
     grid-template-columns: repeat(4, 1fr);
     justify-content: space-between;
 }
-main .topbanner {
+main .top-banner {
     grid-column: 1 / -1;
     display: flex;
     justify-content: space-between;
@@ -79,13 +78,13 @@ main .topbanner {
     margin-bottom: 10px;
 }
 
-main .topbanner h1 {
+main .top-banner h1 {
     margin: 0;
     font-size: 2.5rem;
 }
 
 
-main .topbanner button {
+main .top-banner button {
     background-color: var(--accent);
     color: var(--bg);
     border: none;
@@ -96,7 +95,7 @@ main .topbanner button {
     transition: opacity 0.2s;
 }
 
-main .topbanner button:hover {
+main .top-banner button:hover {
     opacity: 0.8;
 }
 
@@ -115,6 +114,115 @@ main .topbanner button:hover {
     border-color: var(--accent);
     transform: translateY(-5px);
 }
+
+.theme-toggle{
+    position: absolute;
+    right: 4%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+
+.theme-toggle{
+    display: inline-block;
+}
+
+.theme-toggle input{
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.theme-toggle .slider{
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 14px;
+    transform: scale(3);
+    cursor: pointer;
+
+    background: var(--background-day);
+    box-shadow: inset 0 0 3px;
+    transition: 0.4s;
+    filter: drop-shadow(0 0 2px var(--dark));
+    overflow: hidden;
+    z-index: 1;
+}
+
+.theme-toggle .slider.round{ border-radius: 34px; }
+.theme-toggle .slider.round::before{ border-radius: 50%; }
+
+.theme-toggle .slider::before{
+    content: "";
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--sun);
+    transition: 0.4s;
+    box-shadow:
+            inset 0 -1px 2px var(--sun-shadow),
+            0 1px 2px var(--shadow-01),
+            0 0 0 5px var(--shadow-02),
+            0 0 0 10px var(--shadow-02),
+            5px 0 0 10px var(--shadow-02);
+}
+
+.theme-toggle input:checked + .slider{
+    background: var(--background-night);
+    filter: drop-shadow(0 0 2px var(--white));
+}
+
+.theme-toggle input:checked + .slider::before{
+    background: var(--moon);
+    transform: translateX(18px);
+    box-shadow:
+            inset 0 -1px 2px var(--moon-shadow),
+            0 1px 2px var(--shadow-03),
+            0 0 0 5px var(--shadow-02),
+            0 0 0 10px var(--shadow-02),
+            -5px 0 0 10px var(--shadow-02);
+}
+
+.theme-toggle .slider::after{
+    content: "";
+    position: absolute;
+    background: var(--crater);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    bottom: 65%;
+    right: 20%;
+    box-shadow: -8px 7px 0 3px var(--crater), 2px 10px 0 var(--crater);
+    transition: .4s;
+    transform: scale(0) rotate(360deg);
+    filter: saturate(.75);
+}
+
+.theme-toggle input:checked + .slider::after{
+    transform: scale(1) rotate(-24deg);
+}
+
+.theme-toggle .star{
+    transform: scale(0);
+    transition: .4s;
+}
+
+.theme-toggle input:checked + .slider .star{
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-bottom: 7px solid var(--star);
+    transform: rotate(35deg) scale(.3) translate(50%);
+}
+
+.theme-toggle input:checked + .slider .star:last-child{
+    transform: scale(.4) translate(225%, 300%);
+}
+
 
 footer {
     background-color: var(--bg);
