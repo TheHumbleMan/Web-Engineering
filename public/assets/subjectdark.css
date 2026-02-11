@@ -77,15 +77,17 @@ header nav a:active {
 main {
     flex: 1;
     overflow-y: auto;
-
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
     background-color: var(--bg);
-    justify-content: space-between;
     min-height: 100%;
     width: 100%;
     gap: 2rem;
     box-sizing: border-box;
+}
+
+.gridAddon{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: space-between;
 }
 
 main .top-banner {

@@ -83,12 +83,16 @@ header nav a:hover{
 
 /* ===== MAIN GRID ===== */
 main{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
     background-color: var(--bg-body);
     gap: 2rem;
     width: 100%;
     box-sizing: border-box;
+}
+
+.gridAddon{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: space-between;
 }
 
 main .top-banner{
