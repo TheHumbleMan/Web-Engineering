@@ -50,20 +50,21 @@ body {
 
 /* ===== NAV ===== */
 .navbar {
-    position: fixed;
+    position: absolute;
     top: 2%;
     z-index: 100;
 }
 
-.nav-center {
+#nav-center {
     display: flex;
+    flex-direction: row;
     gap: 18px;
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.nav-center a {
+#nav-center a {
     text-decoration: none;
     font-weight: 600;
     padding: 8px 14px;
@@ -73,7 +74,7 @@ body {
     transition: all 0.2s ease;
 }
 
-.nav-center a:hover {
+#nav-center a:hover {
     background: rgba(255,255,255,0.2);
     color: var(--accent);
 }

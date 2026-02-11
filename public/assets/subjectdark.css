@@ -62,11 +62,17 @@ header nav {
 }
 
 header nav a {
-    color: var(--text);
     text-decoration: none;
-    padding: 10px;
-    background-color: var(--card);
-    border-radius: 10px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 8px;
+    color: #fff;
+    background: rgba(255,255,255,0.12);
+    transition: all 0.2s ease;
+}
+header nav a:hover {
+    background: rgba(255,255,255,0.2);
+    color: var(--accent);
 }
 
 header nav a:active {
