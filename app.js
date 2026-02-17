@@ -29,6 +29,9 @@ app.get("/subject", (req, res) => {
 app.get("/timer", (req, res) => {
     res.render("timer", { error: req.query.error, success: req.query.success });
 })
+app.get("/todo", (req, res) => {
+    res.render("todo", { error: req.query.error, success: req.query.success });
+})
 // Dummy-POST (später dein echtes Backend-Login)
 app.post("/auth/login", (req, res) => {
     const { username, password } = req.body;

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>ToDos</title>
+    <link id="theme-style" rel="stylesheet" href="/assets/tododark.css">
+    <script src="/assets/todotest.js" defer></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="subjects.ejs">back</a>
+            <a href="subjects.ejs">logout</a>
+            <div id="dark-mode-switch">
+                <label id="toggle-switch">
+                    <input id="toggle" type="checkbox">
+                    <span id="slider">
+                    <div id="background"></div>
+                    <div id="star-1"></div>
+                    <div id="star-2"></div>
+                </span>
+                </label>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <h1>Todos</h1>
+        <div id="todo-block">
+        </div>
+    </main>
+    <footer id="timeline">
+        <div class="tl-row">
+            <div class="tl-line">
+                <div class="tl-now" title="Jetzt"></div>
+                <div id="tl-markers"></div>
+            </div>
+            <div id="time-span"></div>
+        </div>
+    </footer>
+
+</body>
+</html>
