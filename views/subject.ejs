@@ -3,8 +3,10 @@
 <head>
     <meta charset="utf-8">
     <title>Angeklicktes Fach</title>
-    <link rel="stylesheet" href="/assets/singleSubject.css">
-    <link rel="stylesheet" href="/assets/subjectdark.css">
+    <script defer src="/assets/theme.js"></script>
+    <script defer src="/assets/pomodoro.js"></script>
+    <!--<link id="theme-style" rel="stylesheet" href="/assets/subjectdark.css">-->
+    <link id="theme-style" rel="stylesheet" href="/assets/singleSubjectDark.css">
 </head>
 <body>
 <header>
@@ -12,7 +14,7 @@
         <a href="google.com">Notenübersicht</a>
         <a href="google.com">Lernplan</a>
         <a href="subjects">Zurück zur Übersicht </a>
-        <a href="google.com">Abmelden</a>
+        <a href="/auth/login">Abmelden</a>
 
         <label class="theme-toggle">
             <input type="checkbox" id="toggle">
@@ -84,47 +86,3 @@
 </footer>
 </body>
 </html>
-
-<script>
-    let duration = 25 * 60; // 25 Minuten
-    let remaining = duration;
-    let timer = null;
-
-    const timeEl = document.getElementById("pomo-time");
-
-    function updateDisplay() {
-        const min = Math.floor(remaining / 60);
-        const sec = remaining % 60;
-        timeEl.textContent =
-        String(min).padStart(2, "0") + ":" +
-        String(sec).padStart(2, "0");
-    }
-
-    document.getElementById("start").onclick = () => {
-        if (timer) return;
-        timer = setInterval(() => {
-        if (remaining <= 0) {
-            clearInterval(timer);
-            timer = null;
-            alert("Pomodoro fertig");
-            return;
-        }
-        remaining--;
-        updateDisplay();
-        }, 1000);
-    };
-
-    document.getElementById("pause").onclick = () => {
-        clearInterval(timer);
-        timer = null;
-    };
-
-    document.getElementById("reset").onclick = () => {
-        clearInterval(timer);
-        timer = null;
-        remaining = duration;
-        updateDisplay();
-    };
-
-    updateDisplay();
-</script>

@@ -242,25 +242,129 @@ main .top-banner button:hover{
 .theme-toggle input:checked + .slider .star:last-child{
     transform: scale(.4) translate(225%, 300%);
 }
-
-/* ===== FOOTER ===== */
-footer{
-    background-color: var(--bg-body);
+/*Hier Kommen die eigentlich speziellen sachen von singleSubject*/
+.content {
+    width:100%;
+    min-height:90vh;
+    display:flex;
+    flex-direction:row;
 }
 
-/* ===== MOBILE TUNING ===== */
-@media (max-width: 600px){
-    main{
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
+.noteblock {
+    flex:2;
+    padding:10px;
+    box-sizing:border-box;
+}
 
-    header nav{
-        gap: .5rem;
-        padding: 0 3%;
-    }
+#note-container{
+    width:100%;
+    height:100%;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:flex-start;
+    padding: 10px;
+    box-sizing:border-box;
+}
 
-    header nav a{
-        padding: 8px;
-    }
+#note-textarea {
+    width: 100%;
+    height:100%;
+    box-sizing:border-box;
+    background-color:lightblue;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.sidebar {
+    flex:1;
+    display:flex;
+    box-sizing:border-box;
+    flex-direction:column;
+    gap: 10px;
+    padding:10px
+}
+
+#pruefungs-container {
+    flex:1;
+    display:flex;
+    box-sizing:border-box;
+    flex-direction:column;
+    align-items:flex-start;
+    padding:10px;
+}
+
+#pomodoro-container {
+    flex:1;
+    display:flex;
+    box-sizing:border-box;
+    flex-direction:row;
+    align-items:flex-start;
+    padding:10px;
+}
+
+.pomodoro {
+    padding: 16px;
+    border-radius: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    align-self: center;
+}
+
+.pomodoro .h2 {
+    align-self:center;
+}
+
+.pomodoro .time {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.pomodoro .controls {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.pomodoro button {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+#todos-container {
+    flex:3;
+    display:flex;
+    box-sizing:border-box;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:flex-start;
+    padding:10px;
+    gap:10px
+}
+
+#todo-headline {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:space-between;
+    width:100%;
+}
+
+.singletodo {
+    min-width:100%;
+    display:flex;
+    align-items:center
+}
+
+.singletodo input[type="checkbox"] {
+    align-self:flex-start;
+}
+
+.dueDate {
+    margin-left:auto;
+    align-self:flex-start;
+    white-space:nowrap
 }

@@ -7,18 +7,29 @@
     const THEME_SETS = {
         default: { dark: '/assets/dark.css',        light: '/assets/light.css' },
         subjects: { dark: '/assets/subjectdark.css', light: '/assets/subjectlight.css' },
+        subject: { dark: '/assets/singleSubjectDark.css', light: '/assets/singleSubjectLight.css' },
     };
 
     const SUBJECTS_PREFIXES = [
         '/subjects',
+        '/subject',
         '/timer',
     ];
 
     const path = location.pathname;
+    /*
     const set = SUBJECTS_PREFIXES.some(p => path.startsWith(p))
         ? THEME_SETS.subjects
         : THEME_SETS.default;
-
+    */
+    let set = THEME_SETS.default;
+    if (path.startsWith('/subject')) {
+        set = THEME_SETS.subject;
+    } else if (path.startsWith('/subjects') || path.startsWith('/timer')) {
+        set = THEME_SETS.subjects;
+    } else {
+        set = THEME_SETS.default;
+    }
     const apply = (isDark) => {
         themeLink.href = isDark ? set.dark : set.light;
         document.body.classList.toggle('dark', isDark);
