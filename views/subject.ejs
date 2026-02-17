@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Angeklicktes Fach</title>
+    <link rel="stylesheet" href="/assets/singleSubject.css">
     <link rel="stylesheet" href="/assets/subjectdark.css">
 </head>
 <body>
@@ -29,25 +30,27 @@
         <h1>Name des angeklickten Fachs</h1> <!-- hier backend Code einfügen mit Variablen und so, dass Name variabel wird -->
         <button>Create subject</button>
     </div>
-    <div style="width:100%; min-height:90vh; display:flex;">
+
+    <div class="content">
+
         <!--Linker Teil für die Notizen und co-->
-        <div style="flex:2; padding:10px; box-sizing:border-box;">
-            <div class="subject" style="width:100%; height:100%; flex-direction:column; align-items:flex-start; justify-content:flex-start; padding: 10px; box-sizing:border-box;">
+        <div class="noteblock">
+            <div class="subject" id="note-container">
                 <h2>Notizen</h2>
-                <textarea placeholder="Notizen..." style="width: 100%; height:100%; box-sizing:border-box; background-color:lightblue; border-radius: 15px; padding: 20px;"></textarea>
+                <textarea placeholder="Notizen..." id="note-textarea"></textarea>
             </div>
         </div>
 
         <!--Rechter Teil für Prüfungsdatum, Timer und Todos-->
-        <div style="flex:1; display:flex; flex-direction:column; gap: 10px; padding:10px">
+        <div class="sidebar">
 
-            <div id="prüfungs-container" style="flex:1; box-sizing:border-box; flex-direction:column; display:flex; align-items:flex-start; padding:10px;" class="subject">
+            <div id="pruefungs-container" class="subject">
                 <h2>Prüfungsdatum:</h2>
                 <h2>Note: </h2>
             </div>
-
-            <div id="pomodoroContainer" style="flex:1; box-sizing:border-box; flex-direction:row; display:flex; align-items:flex-start; padding:10px;" class="subject">
-                <h2 style="align-self:center">Pomodoro:</h2>
+            
+            <div id="pomodoro-container" class="subject">
+                <h2>Pomodoro:</h2>
                 <div class="pomodoro">
                     <div class="time" id="pomo-time">25:00</div>
                     <div class="controls">
@@ -58,53 +61,19 @@
                 </div>
             </div>
 
-            <div id="todosContainer" style="flex:5; box-sizing:border-box; flex-direction:column; display:flex; align-items:flex-start; justify-content:flex-start; padding:10px; gap:10px" class="subject">
-                
-                <div style="display: flex; flex-direction: row; align-items: center; justify-content:space-between; width:100%">
+            <div id="todos-container" class="subject">
+                <div id="todo-headline">
                     <h2>Todos:</h2>
                     <button>Neues Todo</button>
                 </div>
 
-                <div class="singletodo" style="min-width:100%; display:flex; align-items:center">
-                    <input type="checkbox" id="notify" style="align-self: flex-start;">
+                <div class="singletodo">
+                    <input type="checkbox" id="notify">
                     <div>
                         Aufgabe 1 machen
                     </div>
-                    <div style="margin-left:auto; align-self:flex-start; white-space:nowrap">Fällig: 12.12.2012</div>
+                    <div class="dueDate">Fällig: 12.12.2012</div>
                 </div>
-
-                <div class="singletodo" style="min-width:100%; display:flex; align-items:center">
-                    <input type="checkbox" id="notify" style="align-self: flex-start;">
-                    <div>
-                        Aufgabe 2 machen
-                    </div>
-                    <div style="margin-left:auto; align-self:flex-start; white-space:nowrap">Fällig: 12.12.2012</div>
-                </div>
-
-                <div class="singletodo" style="min-width:100%; display:flex; align-items:center">
-                    <input type="checkbox" id="notify" style="align-self: flex-start;">
-                    <div>
-                        Aufgabe 3 machen
-                    </div>
-                    <div style="margin-left:auto; align-self:flex-start; white-space:nowrap">Fällig: 12.12.2012</div>
-                </div>
-
-                <div class="singletodo" style="min-width:100%; display:flex; align-items:center">
-                    <input type="checkbox" id="notify" style="align-self: flex-start;">
-                    <div>
-                        Aufgabe 4 machen
-                    </div>
-                    <div style="margin-left:auto; align-self:flex-start; white-space:nowrap">Fällig: 12.12.2012</div>
-                </div>
-
-                <div class="singletodo" style="min-width:100%; display:flex; align-items:center">
-                    <input type="checkbox" id="notify" style="align-self: flex-start;">
-                    <div>
-                        Das ist nummer fünf aber mit einem super langem text dass man sich überlgt, in welcher hinsicht ist das ein todo und nicht die volle notiz?
-                    </div>
-                    <div style="margin-left:auto; align-self:flex-start; white-space:nowrap">Fällig: 12.12.2012</div>
-                </div>
-
             </div>
         </div>
     </div>
@@ -137,7 +106,7 @@
         if (remaining <= 0) {
             clearInterval(timer);
             timer = null;
-            alert("Pomodoro fertig 🍅");
+            alert("Pomodoro fertig");
             return;
         }
         remaining--;
