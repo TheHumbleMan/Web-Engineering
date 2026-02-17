@@ -13,7 +13,7 @@
     <nav>
         <a href="google.com">Notenübersicht</a>
         <a href="google.com">Lernplan</a>
-        <a href="google.com">Abmelden</a>
+        <a href="/auth/login">Abmelden</a>
         <a href="google.com">Google</a>
 
         <label class="theme-toggle">
@@ -29,7 +29,7 @@
 </header>
 <main class="gridAddon">
     <div class="top-banner">
-        <h1>Hallo Christian Hartmann</h1> <!-- hier backend Code einfügen mit Variablen und so, dass Name variabel wird -->
+        <h1>Hallo <%= currentUser ? currentUser.prename + ' ' + currentUser.lastname : 'Nutzer' %></h1>
         <button>Create subject</button>
     </div>
     <div class="subject"></div> <!-- Backend Code um diese subjects in js zu erzeugen -->

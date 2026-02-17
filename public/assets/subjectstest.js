@@ -1,7 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-    const user = { name: "Christian Hartmann" };
-
     const subjects = [
         { name: "Mathematik" },
         { name: "Informatik" },
@@ -10,12 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Datenbanken" }
     ];
 
-    // Name setzen
-    const headline = document.querySelector(".top-banner h1");
-    headline.textContent = "Hallo " + user.name;
-
     // Container
     const container = document.querySelector(".gridAddon");
+    if (!container) return;
 
     // statische subjects entfernen falls vorhanden
     document.querySelectorAll(".subject").forEach(el => el.remove());
@@ -25,7 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Button
     const createBtn = document.querySelector(".top-banner button");
-    createBtn.addEventListener("click", () => {
+    if (createBtn) {
+        createBtn.addEventListener("click", () => {
         const subjectName = prompt("Bitte Namen für das neue Fach eingeben:");
 
         if (!subjectName || subjectName.trim() === "") {
@@ -37,7 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
         subjects.push({ name });
 
         addSubjectToDom(name);
-    });
+        });
+    }
 
     // Hilfsfunktion (damit Code nicht doppelt ist)
     function addSubjectToDom(name) {
@@ -50,30 +46,4 @@ document.addEventListener("DOMContentLoaded", () => {
         subjectDiv.appendChild(title);
         container.appendChild(subjectDiv);
     }
-});
-
-createBtn.addEventListener("click", () => {
-
-    const subjectName = prompt("Bitte Namen für das neue Fach eingeben:");
-
-    // Abbruch oder leerer String
-    if (!subjectName || subjectName.trim() === "") {
-        alert("Ungültiger Name!");
-        return;
-    }
-
-    const newSubject = {
-        name: subjectName.trim()
-    };
-
-    subjects.push(newSubject);
-
-    const subjectDiv = document.createElement("div");
-    subjectDiv.classList.add("subject");
-
-    const title = document.createElement("h2");
-    title.textContent = newSubject.name;
-
-    subjectDiv.appendChild(title);
-    container.appendChild(subjectDiv);
 });

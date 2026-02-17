@@ -50,9 +50,17 @@
     </div>
 <% } %>
 
-<% if (success === 'logout') { %>
+<% if (success) { %>
     <div id="success-message">
-        Sie wurden erfolgreich abgemeldet.
+        <% if (success === 'logout') { %>
+            Sie wurden erfolgreich abgemeldet.
+        <% } else if (success === 'created') { %>
+            Registrierung erfolgreich. Bitte melden Sie sich an.
+        <% } else if (success === 'login') { %>
+            Anmeldung erfolgreich.
+        <% } else { %>
+            Erfolgreich.
+        <% } %>
     </div>
 <% } %>
 

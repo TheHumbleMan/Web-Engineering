@@ -35,7 +35,11 @@
         <% if (error === 'invalid') { %>
             Ungültiger Benutzername oder Passwort.
         <% } else if (error === 'required') { %>
-            Benutzername und Passwort sind erforderlich.
+            Alle Pflichtfelder sind erforderlich.
+        <% } else if (error === 'mismatch') { %>
+            Die Passwörter stimmen nicht überein.
+        <% } else if (error === 'exists') { %>
+            Dieser Benutzername ist bereits vergeben.
         <% } else if (error === 'session') { %>
             Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.
         <% } else if (error === 'access') { %>
@@ -54,6 +58,8 @@
     <div id="success-message">
         <% if (success === 'logout') { %>
             Sie wurden erfolgreich abgemeldet.
+        <% } else if (success === 'created') { %>
+            Registrierung erfolgreich. Bitte melden Sie sich an.
         <% } else { %>
             Erfolgreich.
         <% } %>
