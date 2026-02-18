@@ -7,7 +7,6 @@
     --border: #e1e1e1;
     --accent: #007bff;
     --muted: #a7b3c6;
-    /*--accent-hover: #0056b3;*/
 
     /* Toggle Styles */
     --dark: #111111;
@@ -26,8 +25,8 @@
 
     /* Responsive Toggle Größen (passt auf klein/groß automatisch) */
     --toggle-w: clamp(36px, 6vw, 90px);
-    --toggle-h: calc(var(--toggle-w) * 0.46);   /* ~14/30 */
-    --toggle-pad: calc(var(--toggle-h) * 0.14); /* ~2/14 */
+    --toggle-h: calc(var(--toggle-w) * 0.46);
+    --toggle-pad: calc(var(--toggle-h) * 0.14);
     --knob: calc(var(--toggle-h) - 2 * var(--toggle-pad));
     --knob-shift: calc(var(--toggle-w) - var(--knob) - 2 * var(--toggle-pad));
 }
@@ -58,7 +57,6 @@ body.dark{
     --bg: #0b0f14;
     --muted-bg: lightblue;
     --text: #e8eef7;
-    --button-text: #ffffff;/*keine änderung*/
     --card: #121824;
     --border: #1f2937;
     --accent: #93c5fd;
@@ -69,7 +67,7 @@ body.dark{
 header {
     border-bottom: 1px solid var(--border);
     height: 8%;
-    min-height: 60px; /* verhindert Winz-Header auf sehr kleinen Höhen */
+    min-height: 60px;
     width: 100%;
 }
 
@@ -103,52 +101,10 @@ header nav a:active {
     text-decoration: none;
 }
 
-/* ===== NAV: aus dark.css für login und about ===== */
-/*login und about umschreiben auf die version mit header wie in subject und subjects*/
-/*
-#navbar {
-    position: absolute;
-    top: 2%;
-    z-index: 100;
-    align-self: center;
-}
-
-#nav-center {
-    display: flex;
-    flex-direction: row;
-    gap: 18px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-#nav-center a {
-    text-decoration: none;
-    font-weight: 600;
-    padding: 8px 14px;
-    border-radius: 8px;
-    color: #fff;
-    background: rgba(255,255,255,0.12);
-    transition: all 0.2s ease;
-}
-
-#nav-center a:hover {
-    background: rgba(255,255,255,0.2);
-    color: var(--accent);
-}
-
-#active-link {
-    background: rgba(255,255,255,0.2);
-    color: var(--accent);
-}
-*/
-
-/* MAIN GRID (falls du es auf anderen Seiten nutzt) */
+/* MAIN GRID */
 main {
     flex: 1;
     overflow-y: auto;
-    /*background-color: var(--bg);*/
-    /*min-height: 100%;*/
     width: 100%;
     gap: 2rem;
     box-sizing: border-box;
@@ -194,7 +150,7 @@ main .top-banner button:hover {
     opacity: 0.8;
 }
 
-/* === Subjects seite === */
+/*  Subjects seite  */
 .subject {
     background-color: var(--card);
     border: 1px solid var(--border);
@@ -211,11 +167,10 @@ main .top-banner button:hover {
     transform: translateY(-5px);
 }
 
-/* === singleSubject === */
+/*  singleSubject  */
 
 .content {
     width:100%;
-    /*min-height:90vh;*/
     flex:18;
     display:flex;
     flex-direction:row;
@@ -340,7 +295,7 @@ main .top-banner button:hover {
     white-space:nowrap
 }
 
-/* === TIMER PAGE === */
+/*  TIMER PAGE  */
 #main-timer-page {
     flex: 1;
     display: flex;
@@ -362,116 +317,7 @@ main .top-banner button:hover {
 #timer-box:hover {
     border: 1px solid var(--accent);
 }
-
-/* ===== DARK MODE TOGGLE (RESPONSIVE, nach umschreibeun von login und about löschen) ===== */
-/*
-#dark-mode-switch {
-    position: fixed;
-    top: 3%;
-    right: 4%;
-    z-index: 1000;
-}
-
-#toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: var(--toggle-w);
-    height: var(--toggle-h);
-}
-
-#dark-mode-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-#slider {
-    position: absolute;
-    inset: 0;
-    cursor: pointer;
-    background: var(--background-day);
-    box-shadow: inset 0 0 3px;
-    transition: 0.4s;
-    filter: drop-shadow(0 0 2px var(--dark));
-    overflow: hidden;
-    border-radius: 999px;
-}
-
-#slider::before {
-    content: "";
-    position: absolute;
-    width: var(--knob);
-    height: var(--knob);
-    left: var(--toggle-pad);
-    bottom: var(--toggle-pad);
-    background-color: var(--sun);
-    border-radius: 50%;
-    transition: 0.4s;
-    box-shadow:
-            inset 0 -1px 2px var(--sun-shadow),
-            0 1px 2px var(--shadow-01),
-            0 0 0 .35em var(--shadow-02),
-            0 0 0 .7em var(--shadow-02),
-            .35em 0 0 .7em var(--shadow-02);
-}
-
-#dark-mode-switch input:checked + #slider {
-    background: var(--background-night);
-    filter: drop-shadow(0 0 2px var(--white));
-}
-
-#dark-mode-switch input:checked + #slider::before {
-    background: var(--moon);
-    transform: translateX(var(--knob-shift));
-    box-shadow:
-            inset 0 -1px 2px var(--moon-shadow),
-            0 1px 2px var(--shadow-03),
-            0 0 0 .35em var(--shadow-02),
-            0 0 0 .7em var(--shadow-02),
-            -.35em 0 0 .7em var(--shadow-02);
-}
-
-#slider::after {
-    content: "";
-    position: absolute;
-    background: var(--crater);
-    width: calc(var(--toggle-h) * .28);
-    height: calc(var(--toggle-h) * .28);
-    border-radius: 50%;
-    bottom: 65%;
-    right: 20%;
-    box-shadow:
-            calc(var(--toggle-h) * -.55) calc(var(--toggle-h) * .5) 0 calc(var(--toggle-h) * .2) var(--crater),
-            calc(var(--toggle-h) * .14) calc(var(--toggle-h) * .7) 0 0 var(--crater);
-    transition: .4s;
-    transform: scale(0) rotate(360deg);
-}
-
-#dark-mode-switch input:checked + #slider::after {
-    transform: scale(1) rotate(-24deg);
-}
-
-#star-1,
-#star-2 {
-    transform: scale(0);
-    transition: .4s;
-}
-
-#dark-mode-switch input:checked + #slider #star-1,
-#dark-mode-switch input:checked + #slider #star-2 {
-    position: absolute;
-    width: 0;
-    height: 0;
-    border: calc(var(--toggle-h) * .7) solid transparent;
-    border-bottom: calc(var(--toggle-h) * .5) solid var(--star);
-    transform: rotate(35deg) scale(.3) translate(50%);
-}
-
-#dark-mode-switch input:checked + #slider #star-2 {
-    transform: scale(.4) translate(225%, 300%);
-}
-*/
-/* === THEME TOGGLE === */
+/*  THEME TOGGLE */
 .theme-toggle {
     position: absolute;
     right: 4%;
@@ -493,10 +339,7 @@ main .top-banner button:hover {
     width: var(--toggle-w);
     height: var(--toggle-h);
     cursor: pointer;
-
-    /* WICHTIG: kein scale() mehr */
     transform: none;
-
     background: var(--background-day);
     box-shadow: inset 0 0 3px;
     transition: 0.4s;
@@ -585,7 +428,7 @@ main .top-banner button:hover {
     transform: scale(.4) translate(225%, 300%);
 }
 
-/* ===== FORMS ===== */
+/*   FORMS   */
 #login-form {
     width: 100%;
     max-width: 380px;
@@ -645,11 +488,8 @@ main .top-banner button:hover {
 #login-form button:hover {
     background: rgba(147,197,253,0.22);
 }
-/* ===== ABOUT ===== */
+/* ABOUT  */
 #about {
-    /* Abstand zum linken Rand 
-    margin-left: 24px;
-    margin-right: 24px;*/
     align-self: center;
     justify-self: center;
     height: 50%;
@@ -678,7 +518,7 @@ main .top-banner button:hover {
     border-radius: 14px;
     border: 1px solid var(--border);
 }
-/* ===== MESSAGES ===== */
+/*   MESSAGES   */
 #error-message,
 #success-message {
     width: 100%;
@@ -700,7 +540,7 @@ main .top-banner button:hover {
     border: 1px solid rgba(34,197,94,0.2);
 }
 
-/*   todo-layouts*/
+/* \TODO */
 
 #todo-block{
     display: flex;
