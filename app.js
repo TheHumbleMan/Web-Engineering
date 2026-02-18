@@ -130,7 +130,7 @@ app.post("/auth/login", async (req, res) => {
 
     const usersData = await loadUsers();
     const candidate = usersData.users.find(
-        (user) => String(user.username).toLowerCase() === String(username).trim().toLowerCase()
+        (user) => String(user.username) === String(username).trim()
     );
     if (!candidate) return res.redirect("/auth/login?error=invalid");
 
