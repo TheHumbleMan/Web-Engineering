@@ -23,6 +23,18 @@
       "lastname": "hartmann",
       "username": "test",
       "password_hash": "$2a$10$.amulBjaaNhmsIG8SqDd8.Cp1NhbLd34f2kRcSG03Hn24y3QSJhpW"
+    },
+    {
+      "prename": "nele",
+      "lastname": "matti",
+      "username": "nele",
+      "password_hash": "$2a$10$Z5h0SW5Tpf6Id7KuiQgrAe2bzPmT2vGHiuPTvHG.utP2PF.Y247Zu"
+    },
+    {
+      "prename": "Nele",
+      "lastname": "Maddi",
+      "username": "nelem",
+      "password_hash": "$2a$10$uunwKqRwyZ/RujaLQkePfua93DLHwM07b48z5KfBb9TQKf12s7JSG"
     }
   ]
 }

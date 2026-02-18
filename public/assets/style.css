@@ -1,10 +1,13 @@
 :root {
-    --text: #e8eef7;
+    --bg: #fafafa83;
+    --muted-bg: lightgrey;
+    --text: #333;
+    --button-text: #ffffff;
+    --card: #ffffff;
+    --border: #e1e1e1;
+    --accent: #007bff;
     --muted: #a7b3c6;
-    --bg: #0b0f14;
-    --card: #121824;
-    --border: #1f2937;
-    --accent: #93c5fd;
+    /*--accent-hover: #0056b3;*/
 
     /* Toggle Styles */
     --dark: #111111;
@@ -35,6 +38,7 @@
 html, body {
     height: 100%;
     margin: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -44,9 +48,21 @@ body {
             var(--bg);
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     color: var(--text);
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: auto;
+}
+
+body.dark{
+    --bg: #0b0f14;
+    --muted-bg: lightblue;
+    --text: #e8eef7;
+    --button-text: #ffffff;/*keine änderung*/
+    --card: #121824;
+    --border: #1f2937;
+    --accent: #93c5fd;
+    --muted: #a7b3c6;
 }
 
 /* HEADER / NAV */
@@ -54,6 +70,7 @@ header {
     border-bottom: 1px solid var(--border);
     height: 8%;
     min-height: 60px; /* verhindert Winz-Header auf sehr kleinen Höhen */
+    width: 100%;
 }
 
 header nav {
@@ -73,7 +90,7 @@ header nav a {
     font-weight: 600;
     padding: 8px 14px;
     border-radius: 8px;
-    color: #fff;
+    color: var(--text);
     background: rgba(255,255,255,0.12);
     transition: all 0.2s ease;
 }
@@ -88,10 +105,12 @@ header nav a:active {
 
 /* ===== NAV: aus dark.css für login und about ===== */
 /*login und about umschreiben auf die version mit header wie in subject und subjects*/
+/*
 #navbar {
     position: absolute;
     top: 2%;
     z-index: 100;
+    align-self: center;
 }
 
 #nav-center {
@@ -122,17 +141,19 @@ header nav a:active {
     background: rgba(255,255,255,0.2);
     color: var(--accent);
 }
-
+*/
 
 /* MAIN GRID (falls du es auf anderen Seiten nutzt) */
 main {
     flex: 1;
     overflow-y: auto;
-    background-color: var(--bg);
-    min-height: 100%;
+    /*background-color: var(--bg);*/
+    /*min-height: 100%;*/
     width: 100%;
     gap: 2rem;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .gridAddon{
@@ -150,6 +171,7 @@ main .top-banner {
     color: var(--text);
     border-bottom: 1px solid var(--border);
     margin-bottom: 10px;
+    flex:1;
 }
 
 main .top-banner h1 {
@@ -157,9 +179,9 @@ main .top-banner h1 {
     font-size: 2.5rem;
 }
 
-main .top-banner button {
+button {
     background-color: var(--accent);
-    color: var(--bg);
+    color: var(--button-text);
     border: none;
     padding: 10px 20px;
     border-radius: 8px;
@@ -193,7 +215,8 @@ main .top-banner button:hover {
 
 .content {
     width:100%;
-    min-height:90vh;
+    /*min-height:90vh;*/
+    flex:18;
     display:flex;
     flex-direction:row;
 }
@@ -218,7 +241,7 @@ main .top-banner button:hover {
     width: 100%;
     height:100%;
     box-sizing:border-box;
-    background-color:lightblue;
+    background-color: var(--muted-bg);
     border-radius: 15px;
     padding: 20px;
 }
@@ -341,6 +364,7 @@ main .top-banner button:hover {
 }
 
 /* ===== DARK MODE TOGGLE (RESPONSIVE, nach umschreibeun von login und about löschen) ===== */
+/*
 #dark-mode-switch {
     position: fixed;
     top: 3%;
@@ -446,7 +470,7 @@ main .top-banner button:hover {
 #dark-mode-switch input:checked + #slider #star-2 {
     transform: scale(.4) translate(225%, 300%);
 }
-
+*/
 /* === THEME TOGGLE === */
 .theme-toggle {
     position: absolute;
@@ -571,13 +595,14 @@ main .top-banner button:hover {
     box-shadow: 0 10px 30px rgba(0,0,0,0.35);
     margin: auto 0;
     padding: 24px 22px;
+    align-self: center;
 }
 
 #login-form h1 {
     margin: 0 0 16px;
     font-size: 2.2rem;
     text-align: center;
-    color: #fff;
+    color: var(--text);
 }
 
 #login-form form {
@@ -596,7 +621,7 @@ main .top-banner button:hover {
     padding: 12px;
     border-radius: 10px;
     border: 1px solid var(--border);
-    background: #0e1420;
+    background: var(--bg);
     color: var(--text);
 }
 
@@ -630,7 +655,8 @@ main .top-banner button:hover {
     height: 50%;
     width: 50%;
     margin-top: 50px;
-    flex:1
+    flex:1;
+    background-color: transparent;
 }
 
 #about h1 {

@@ -4,12 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>About</title>
-    <link rel="stylesheet" href="/assets/dark.css">
+    <link rel="stylesheet" href="/assets/style.css">
+    <script defer src="/assets/theme.js"></script>
     <!--<link rel="stylesheet" href="/assets/style.css">-->
     <!--<script defer src="/assets/theme.js"></script>-->
 </head>
 <body style="align-items:center">
 
+<!--
 <nav id="navbar">
     <div id="nav-inner">
         <ul id="nav-center">
@@ -30,6 +32,24 @@
         </div>
     </div>
 </nav>
+-->
+<header>
+    <nav>
+        <a href="/auth/register">Register</a>
+        <a href="/auth/login">Login</a>
+        <a id="active-link" href="/about">About</a>
+
+        <label class="theme-toggle">
+            <input type="checkbox" id="toggle">
+            <span class="slider round">
+                <div class="background"></div>
+                <div class="star"></div>
+                <div class="star"></div>
+            </span>
+        </label>
+
+    </nav>
+</header>
 
 <main id="about">
     <h1>About Our Project</h1>

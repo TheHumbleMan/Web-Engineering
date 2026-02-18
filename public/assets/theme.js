@@ -1,4 +1,4 @@
-(() => {
+/*(() => {
     const toggle = document.querySelector('#toggle');
     const themeLink = document.querySelector('#theme-style');
     const KEY = 'theme';
@@ -21,7 +21,7 @@
     const set = SUBJECTS_PREFIXES.some(p => path.startsWith(p))
         ? THEME_SETS.subjects
         : THEME_SETS.default;
-    */
+    *//*
     let set = THEME_SETS.default;
     if (path.startsWith('/subject')) {
         set = THEME_SETS.subject;
@@ -45,6 +45,25 @@
     toggle.addEventListener('change', () => {
         const shouldBeDark = toggle.checked;
         apply(shouldBeDark);
+        localStorage.setItem(KEY, shouldBeDark ? 'dark' : 'light');
+    });
+})();*/
+
+(() => {
+    const toggle = document.querySelector('#toggle');
+    const KEY = 'theme';
+    if (!toggle) return;
+
+    const saved = localStorage.getItem(KEY);
+    const systemDark = matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = saved ? saved === 'dark' : systemDark;
+
+    document.body.classList.toggle('dark', isDark);
+    toggle.checked = isDark;
+
+    toggle.addEventListener('change', () => {
+        const shouldBeDark = toggle.checked;
+        document.body.classList.toggle('dark', shouldBeDark);
         localStorage.setItem(KEY, shouldBeDark ? 'dark' : 'light');
     });
 })();

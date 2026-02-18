@@ -7,9 +7,10 @@
     <!--<link id="theme-style" rel="stylesheet" href="/assets/dark.css">-->
     <!--<script defer src="/assets/theme.js"></script>-->
     <link rel="stylesheet" href="/assets/style.css">
+    <script defer src="/assets/theme.js"></script>
 </head>
 <body>
-
+<!--
 <nav id="navbar">
     <div id="nav-inner">
         <ul id="nav-center">
@@ -30,6 +31,24 @@
         </div>
     </div>
 </nav>
+-->
+<header>
+    <nav>
+        <a id="active-link" href="/auth/register">Register</a>
+        <a href="/auth/login">Login</a>
+        <a href="/about">About</a>
+
+        <label class="theme-toggle">
+            <input type="checkbox" id="toggle">
+            <span class="slider round">
+                <div class="background"></div>
+                <div class="star"></div>
+                <div class="star"></div>
+            </span>
+        </label>
+
+    </nav>
+</header>
 
 <% if (error) { %>
     <div id="error-message">
