@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>ToDos</title>
-    <link id="theme-style" rel="stylesheet" href="/assets/tododark.css">
+    <link rel="stylesheet" href="/assets/style.css">
     <script defer src="/assets/theme.js"></script>
     <script src="/assets/todotest.js" defer></script>
 </head>
-<body>
+<body><!--
     <header>
         <nav>
             <a href="subjects">back</a>
@@ -24,12 +24,30 @@
             </div>
         </nav>
     </header>
+-->
+    <header>
+    <nav>
+        <a href="subjects">Zurück zur Übersicht </a>
+        <a href="/auth/login">Abmelden</a>
+
+        <label class="theme-toggle">
+            <input type="checkbox" id="toggle">
+            <span class="slider round">
+                <div class="background"></div>
+                <div class="star"></div>
+                <div class="star"></div>
+            </span>
+        </label>
+
+    </nav>
+    </header>
+
     <main>
         <h1>Todos</h1>
         <div id="todo-block">
         </div>
     </main>
-    <footer id="timeline">
+    <footer id="todofooter">
         <div class="tl-row">
             <div class="tl-line">
                 <div class="tl-now" title="Jetzt"></div>
