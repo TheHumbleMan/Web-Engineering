@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>Angeklicktes Fach</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <script defer src="/assets/theme.js"></script>
+    <script defer src="/assets/pomodoro.js"></script>
+</head>
+<body>
+<header>
+    <nav>
+        <a href="google.com">Notenübersicht</a>
+        <a href="google.com">Lernplan</a>
+        <a href="subjects">Zurück zur Übersicht </a>
+        <a href="/auth/login">Abmelden</a>
+
+        <label class="theme-toggle">
+            <input type="checkbox" id="toggle">
+            <span class="slider round">
+                <div class="background"></div>
+                <div class="star"></div>
+                <div class="star"></div>
+            </span>
+        </label>
+
+    </nav>
+</header>
+<main>
+    <div class="top-banner">
+        <h1>Name des angeklickten Fachs</h1> <!-- hier backend Code einfügen mit Variablen und so, dass Name variabel wird -->
+        <button>Create subject</button>
+    </div>
+
+    <div class="content">
+
+        <!--Linker Teil für die Notizen und co-->
+        <div class="noteblock">
+            <div class="subject" id="note-container">
+                <h2>Notizen</h2>
+                <textarea placeholder="Notizen..." id="note-textarea"></textarea>
+            </div>
+        </div>
+
+        <!--Rechter Teil für Prüfungsdatum, Timer und Todos-->
+        <div class="sidebar">
+
+            <div id="pruefungs-container" class="subject">
+                <h2>Prüfungsdatum:</h2>
+                <h2>Note: </h2>
+            </div>
+            
+            <div id="pomodoro-container" class="subject">
+                <h2>Pomodoro:</h2>
+                <div class="pomodoro">
+                    <div class="time" id="pomo-time">25:00</div>
+                    <div class="controls">
+                        <button id="start">Start</button>
+                        <button id="pause">Pause</button>
+                        <button id="reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="todos-container" class="subject">
+                <div id="todo-headline">
+                    <h2>Todos:</h2>
+                    <button>Neues Todo</button>
+                </div>
+
+                <div class="singletodo">
+                    <input type="checkbox" id="notify">
+                    <div>
+                        Aufgabe 1 machen
+                    </div>
+                    <div class="dueDate">Fällig: 12.12.2012</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<footer>
+</footer>
+</body>
+</html>

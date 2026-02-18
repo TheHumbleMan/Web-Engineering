@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>subjects</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <script defer src="/assets/theme.js"></script>
+    <script src="/assets/subjectstest.js" defer></script>
+
+
+</head>
+<body>
+<header>
+    <nav>
+        <a href="google.com">Notenübersicht</a>
+        <a href="/todo">Lernplan</a>
+        <a href="/auth/login">Abmelden</a>
+        <a href="google.com">Google</a>
+
+        <label class="theme-toggle">
+            <input type="checkbox" id="toggle">
+            <span class="slider round">
+                <div class="background"></div>
+                <div class="star"></div>
+                <div class="star"></div>
+            </span>
+        </label>
+
+    </nav>
+</header>
+<main class="gridAddon">
+    <div class="top-banner">
+        <h1>Hallo <%= currentUser ? currentUser.prename + ' ' + currentUser.lastname : 'Nutzer' %></h1>
+        <button>Create subject</button>
+    </div>
+    <div class="subject"></div> <!-- Backend Code um diese subjects in js zu erzeugen -->
+    <div class="subject"></div>
+    <div class="subject"></div>
+    <div class="subject"></div>
+    <div class="subject"></div>
+    <div class="subject"></div>
+    <div class="subject"></div>
+    <div class="subject"></div>
+    <div class="subject"></div>
+</main>
+<footer>
+
+</footer>
+</body>
+</html>

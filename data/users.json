@@ -1,0 +1,40 @@
+{
+  "users": [
+    {
+      "prename": "Max",
+      "lastname": "Mustermann",
+      "username": "User",
+      "password_hash": "$2a$10$dya58gpkYZG2PQJZpr3cS.KdyNDIip0vM6UuuuaZvM/DXGIl.Q8hm"
+    },
+    {
+      "prename": "Christian",
+      "lastname": "Hartmann",
+      "username": "Chruisi",
+      "password_hash": "$2a$10$.QGhlchZMFoGGy/A51v0XO6yFX1qCsfch1YW3/C9RVYzSKGu6geTG"
+    },
+    {
+      "prename": "Christian",
+      "lastname": "Hartmann",
+      "username": "Chruisi2",
+      "password_hash": "$2a$10$FztJrjifAfqll6Wz1/CdOusgYT2DmkCCLJ9E4pB55dsmE7120rgSS"
+    },
+    {
+      "prename": "christian",
+      "lastname": "hartmann",
+      "username": "test",
+      "password_hash": "$2a$10$.amulBjaaNhmsIG8SqDd8.Cp1NhbLd34f2kRcSG03Hn24y3QSJhpW"
+    },
+    {
+      "prename": "nele",
+      "lastname": "matti",
+      "username": "nele",
+      "password_hash": "$2a$10$Z5h0SW5Tpf6Id7KuiQgrAe2bzPmT2vGHiuPTvHG.utP2PF.Y247Zu"
+    },
+    {
+      "prename": "Nele",
+      "lastname": "Maddi",
+      "username": "nelem",
+      "password_hash": "$2a$10$uunwKqRwyZ/RujaLQkePfua93DLHwM07b48z5KfBb9TQKf12s7JSG"
+    }
+  ]
+}

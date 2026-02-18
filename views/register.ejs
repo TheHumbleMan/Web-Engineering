@@ -4,37 +4,39 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Register</title>
-    <link id="theme-style" rel="stylesheet" href="/assets/dark.css">
+    <link rel="stylesheet" href="/assets/style.css">
     <script defer src="/assets/theme.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <div class="nav-inner">
-        <ul class="nav-center">
-            <li><a href="/auth/register">Register</a></li>
-            <li><a class="active" href="/auth/login">Login</a></li>
-            <li><a href="/about">About</a></li>
-        </ul>
 
-        <div id="dark-mode-switch">
-            <label class="switch">
-                <input type="checkbox">
-                <span class="slider round">
-                    <div class="background"></div>
-                    <div class="star"></div>
-                    <div class="star"></div>
-                </span>
-            </label>
-        </div>
-    </div>
-</nav>
+<header>
+    <nav>
+        <a id="active-link" href="/auth/register">Register</a>
+        <a href="/auth/login">Login</a>
+        <a href="/about">About</a>
+
+        <label class="theme-toggle">
+            <input type="checkbox" id="toggle">
+            <span class="slider round">
+                <div class="background"></div>
+                <div class="star"></div>
+                <div class="star"></div>
+            </span>
+        </label>
+
+    </nav>
+</header>
 
 <% if (error) { %>
-    <div class="error-message">
+    <div id="error-message">
         <% if (error === 'invalid') { %>
             Ungültiger Benutzername oder Passwort.
         <% } else if (error === 'required') { %>
-            Benutzername und Passwort sind erforderlich.
+            Alle Pflichtfelder sind erforderlich.
+        <% } else if (error === 'mismatch') { %>
+            Die Passwörter stimmen nicht überein.
+        <% } else if (error === 'exists') { %>
+            Dieser Benutzername ist bereits vergeben.
         <% } else if (error === 'session') { %>
             Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.
         <% } else if (error === 'access') { %>
@@ -49,32 +51,39 @@
     </div>
 <% } %>
 
-<% if (success === 'logout') { %>
-    <div class="success-message">
-        Sie wurden erfolgreich abgemeldet.
+<% if (success) { %>
+    <div id="success-message">
+        <% if (success === 'logout') { %>
+            Sie wurden erfolgreich abgemeldet.
+        <% } else if (success === 'created') { %>
+            Registrierung erfolgreich. Bitte melden Sie sich an.
+        <% } else { %>
+            Erfolgreich.
+        <% } %>
     </div>
 <% } %>
-<div class="register-form">
-    <h1>Register</h1>
-    <form method="POST" action="/auth/login">
 
+<div id="login-form">
+    <h1>Register</h1>
+    <form method="POST" action="/auth/register">
         <label for="prename">Vorname *</label>
         <input id="prename" name="prename" type="text" required autofocus>
 
         <label for="lastname">Nachname *</label>
-        <input id="lastname" name="lastname" type="text" required autofocus>
+        <input id="lastname" name="lastname" type="text" required>
 
         <label for="username">Benutzername *</label>
-        <input id="username" name="username" type="text" required autofocus>
+        <input id="username" name="username" type="text" required>
 
         <label for="passwordone">Passwort *</label>
         <input id="passwordone" name="passwordone" type="password" required>
 
-        <label for="passwordtwo">Passwort bestätigen*</label>
+        <label for="passwordtwo">Passwort bestätigen *</label>
         <input id="passwordtwo" name="passwordtwo" type="password" required>
 
         <button type="submit">Registrieren</button>
     </form>
 </div>
+
 </body>
 </html>
