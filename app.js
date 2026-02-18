@@ -61,6 +61,13 @@ function requireLogin(req, res, next) {
     next();
 }
 
+// Root-URL Redirect
+app.get("/", (req, res) => {
+    if (req.session.user) {
+        return res.redirect("/subjects");
+    }
+    return res.redirect("/auth/login");
+});
 
 // Login-Seite rendern (EJS!)
 app.get("/auth/login", (req, res) => {
