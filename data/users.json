@@ -1,10 +1,10 @@
 {
-  "users": [
+    "users": [
     {
-      "prename": "Max",
-      "lastname": "Mustermann",
-      "username": "User",
-      "password_hash": "$2a$10$dya58gpkYZG2PQJZpr3cS.KdyNDIip0vM6UuuuaZvM/DXGIl.Q8hm"
+        "prename": "Max",
+        "lastname": "Mustermann",
+        "username": "User",
+        "password_hash": "$2a$10$dya58gpkYZG2PQJZpr3cS.KdyNDIip0vM6UuuuaZvM/DXGIl.Q8hm"
     }
-  ]
+    ]
 }
