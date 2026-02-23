@@ -6,12 +6,13 @@
     <link rel="stylesheet" href="/assets/style.css">
     <script defer src="/assets/theme.js"></script>
     <script defer src="/assets/pomodoro.js"></script>
+    <script src="/assets/singlesubject.js" defer></script>
 </head>
 <body>
 <header>
     <nav>
         <a href="google.com">Notenübersicht</a>
-        <a href="/todo.com">Lernplan</a>
+        <a href="/todo">Lernplan</a>
         <a href="subjects">Zurück zur Übersicht </a>
         <a href="/auth/login">Abmelden</a>
 
@@ -28,15 +29,15 @@
 </header>
 <main>
     <div class="top-banner">
-        <h1><%= subject.name %></h1>
+        <h1 id="name"><%= subject.name %></h1>
 
-
+        <button id="saveSubjectBtn">Speichern</button>
         <!-- Lösch-Formular -->
         <form
             action="/subjects/delete"
             method="POST"
             onsubmit="return confirm('Willst du dieses Fach wirklich löschen?');">
-            
+
             <input type="hidden" name="id" value="<%= subject.id %>">
             <button type="submit" class="delete-btn">Fach löschen</button>
         </form>
@@ -56,10 +57,10 @@
         <div class="sidebar">
 
             <div id="pruefungs-container" class="subject">
-
                 <div class="line">
                     <h2 class="left">Prüfungsdatum:</h2>
                     <input class="right lineElement"
+                        type="date"
                         id="examDate"
                         value="<%=subject.examDate || ''%>"
                         placeholder="-----">
@@ -85,19 +86,59 @@
                 </div>
             </div>
 
+            <div id="todoPopup">
+                <label>
+                    Aufgabe:
+                    <input type="text" id="todoName">
+                </label><br><br>
+                <label>
+                    Priorität:
+                    <select id="todoPriority">
+                    <option value="niedrig">Niedrig</option>
+                    <option value="mittel">Mittel</option>
+                    <option value="hoch">Hoch</option>
+                    </select>
+                </label><br><br>
+                <label>
+                    Fälligkeitsdatum:
+                    <input type="date" id="todoDueDate">
+                </label><br><br>
+                <div class="line">
+                    <button onclick="submitTodo()">Hinzufügen</button>
+                    <button onclick="closePopup()">Abbrechen</button>
+                </div>
+            </div>
+
             <div id="todos-container" class="subject">
                 <div id="todo-headline">
                     <h2>Todos:</h2>
-                    <button>Neues Todo</button>
+                    <button id="addTodo">Neues Todo</button>
                 </div>
+                <% subject.todos.forEach(todo => {
+                    let color = "black";
 
-                <div class="singletodo">
-                    <input type="checkbox" id="notify">
-                    <div>
-                        Aufgabe 1 machen
+                    if (todo.prio === "low") color = "green";
+                    if (todo.prio === "medium") color = "orange";
+                    if (todo.prio === "high") color = "red";
+                %>
+
+                    <div class="singletodo">
+                        <input type="checkbox"<%= todo.done === "true" ? "checked" : "" %>>
+                        <div class="todo-text"
+                            data-id="<%= todo.id %>"
+                            data-done="<%= todo.done %>"
+                            data-prio="<%= todo.prio %>"
+                            data-dueDate="<%= todo.dueDate %>">
+                            
+                            <%= todo.text %>
+                        </div>
+
+                        <div class="dueDate">
+                            Fällig: <%= todo.dueDate %>
+                        </div>
                     </div>
-                    <div class="dueDate">Fällig: 12.12.2012</div>
-                </div>
+
+                <% }) %>
             </div>
         </div>
     </div>

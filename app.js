@@ -9,6 +9,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use(express.urlencoded({ extended: true })); // für POST form data
+app.use(express.json());
 app.use(
     session({
         secret: process.env.SESSION_SECRET || "web-engineering-secret",
@@ -175,7 +176,7 @@ app.post("/auth/login", async (req, res) => {
         (user) => String(user.username).toLowerCase() === String(username).trim().toLowerCase()
     );
     if (!candidate) return res.redirect("/auth/login?error=invalid");
-
+    
     const match = await bcrypt.compare(password, candidate.password_hash);
     if (!match) return res.redirect("/auth/login?error=invalid");
 
@@ -234,6 +235,28 @@ app.post("/subjects/delete", requireLogin, async (req, res) => {
 
     // Zurück zur übersicht
     return res.redirect("/subjects?success=deleted");
+});
+
+app.post("/subjects/:id/save", requireLogin, async (req, res) => {
+    const username = req.session.user.username;
+    const subjectId = req.params.id;
+    const userData = await loadUserData(username);
+
+    const subject = userData.subjects.find(s => s.id === subjectId);
+    if (!subject) {
+        return res.status(404).send("Subject nicht gefunden");
+    }
+
+    const { examDate, grade, todos, notes } = req.body;
+    subject.examDate = examDate;
+    subject.grade = grade;
+    subject.todos = todos;
+    subject.note = notes;
+
+    const filePath = path.join(__dirname, "data", "userdata", `${username}.json`);
+    await fs.writeFile(filePath, JSON.stringify(userData, null, 2), "utf8");
+
+    res.sendStatus(200);
 });
 
 app.listen(3000, "127.0.0.1", () => console.log("Listening on http://127.0.0.1:3000"));
