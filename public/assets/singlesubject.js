@@ -112,6 +112,6 @@ function updateLocalStorage() {
  */
 function formatGermanDate(isoDate) {
     if (!isoDate) return "";
-    const [year, month, day] = isoDate.split("-");
-    return `${day}.${month}.${year}`;
+    const date = new Date(isoDate);
+    return date.toLocaleDateString("de-DE");
 }
