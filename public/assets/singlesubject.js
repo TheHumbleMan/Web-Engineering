@@ -1,23 +1,23 @@
 /**
  * Sobald die Seite erstmals gerendert wurde, werden sämtliche
- * Einträge ins Prüfungsdatum, Note, oder den Notiz block im localStorage
+ * Einträge ins Prüfungsdatum, Note, oder den Notiz block im sessionStorage
  * zwischengespeichert
  */
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("examDate").addEventListener("change", updateLocalStorage);
-    document.getElementById("grade").addEventListener("input", updateLocalStorage);
-    document.getElementById("note-textarea").addEventListener("input", updateLocalStorage);
+    document.getElementById("examDate").addEventListener("change", updateSessionStorage);
+    document.getElementById("grade").addEventListener("input", updateSessionStorage);
+    document.getElementById("note-textarea").addEventListener("input", updateSessionStorage);
 })
 
 /**
- * Speichern knopf: die aktell im localStorage gespeicherten daten werden
+ * Speichern knopf: die aktell im sessionStorage gespeicherten daten werden
  * in die Serverseitige JSON überführt
  */
 const saveBtn = document.getElementById("saveSubjectBtn");
 saveBtn.addEventListener("click", async () => {
-    updateLocalStorage()
+    updateSessionStorage()
     const subjectId = window.location.pathname.split("/").pop();
-    const subjectData = JSON.parse(localStorage.getItem(subjectId));
+    const subjectData = JSON.parse(sessionStorage.getItem(subjectId));
 
     // POST an Backend
     const response = await fetch(`/subjects/${subjectId}/save`, {
@@ -50,7 +50,7 @@ function closePopup() {
 
 /**
  * Hilfsfunktion die basierend auf den Eingaben im Popup-fenster ein
- * entsprechendes Todo erstellt,rendert und in localStorage schreibt
+ * entsprechendes Todo erstellt,rendert und in sessionStorage schreibt
  */
 function submitTodo() {
     const todoID = `todo${Date.now()}`;
@@ -81,14 +81,14 @@ function submitTodo() {
     `;
     todosContainer.appendChild(div);
     closePopup();
-    updateLocalStorage();
+    updateSessionStorage();
 }
 
 /**
- * Hilffunction die die aktuell Sichtbaren eingaben in localStorage im gleichen
+ * Hilffunction die die aktuell Sichtbaren eingaben in SessionStorage im gleichen
  * Format wie in der Serverseitigen JSON speichert
  */
-function updateLocalStorage() {
+function updateSessionStorage() {
     const subjectId = window.location.pathname.split("/").pop();
     const name = document.getElementById("name").innerText;
     const examDate = document.getElementById("examDate").value;
@@ -103,7 +103,7 @@ function updateLocalStorage() {
     }));
 
     const subjectData = { subjectId, name, examDate, grade, notes, todos };
-    localStorage.setItem(subjectId, JSON.stringify(subjectData));
+    sessionStorage.setItem(subjectId, JSON.stringify(subjectData));
 }
 
 /**
