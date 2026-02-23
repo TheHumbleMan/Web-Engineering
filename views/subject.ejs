@@ -11,7 +11,7 @@
 <header>
     <nav>
         <a href="google.com">Notenübersicht</a>
-        <a href="google.com">Lernplan</a>
+        <a href="/todo.com">Lernplan</a>
         <a href="subjects">Zurück zur Übersicht </a>
         <a href="/auth/login">Abmelden</a>
 
@@ -28,8 +28,18 @@
 </header>
 <main>
     <div class="top-banner">
-        <h1>Name des angeklickten Fachs</h1> <!-- hier backend Code einfügen mit Variablen und so, dass Name variabel wird -->
-        <button>Create subject</button>
+        <h1><%= subject.name %></h1>
+
+
+        <!-- Lösch-Formular -->
+        <form
+            action="/subjects/delete"
+            method="POST"
+            onsubmit="return confirm('Willst du dieses Fach wirklich löschen?');">
+            
+            <input type="hidden" name="id" value="<%= subject.id %>">
+            <button type="submit" class="delete-btn">Fach löschen</button>
+        </form>
     </div>
 
     <div class="content">
@@ -38,7 +48,7 @@
         <div class="noteblock">
             <div class="subject" id="note-container">
                 <h2>Notizen</h2>
-                <textarea placeholder="Notizen..." id="note-textarea"></textarea>
+                <textarea placeholder="Notizen..." id="note-textarea"><%= subject.note %></textarea>
             </div>
         </div>
 
@@ -46,8 +56,21 @@
         <div class="sidebar">
 
             <div id="pruefungs-container" class="subject">
-                <h2>Prüfungsdatum:</h2>
-                <h2>Note: </h2>
+
+                <div class="line">
+                    <h2 class="left">Prüfungsdatum:</h2>
+                    <input class="right lineElement"
+                        id="examDate"
+                        value="<%=subject.examDate || ''%>"
+                        placeholder="-----">
+                </div>
+                <div class="line">
+                    <h2 class="left">Note:</h2>
+                    <input class="right lineElement"
+                        id="grade"
+                        value="<%=subject.grade || ''%>"
+                        placeholder="-----">
+                </div>
             </div>
             
             <div id="pomodoro-container" class="subject">

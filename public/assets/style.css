@@ -1,9 +1,10 @@
 :root {
     --bg: #fafafa83;
     --muted-bg: lightgrey;
+    --button-bg:#007bff;
     --text: #333;
     --button-text: #ffffff;
-    --card: #ffffff;
+    --card: lightgray;
     --border: #e1e1e1;
     --accent: #007bff;
     --muted: #a7b3c6;
@@ -89,7 +90,7 @@ header nav a {
     padding: 8px 14px;
     border-radius: 8px;
     color: var(--text);
-    background: rgba(255,255,255,0.12);
+    background: var(--button-bg);
     transition: all 0.2s ease;
 }
 header nav a:hover {
@@ -128,6 +129,7 @@ main .top-banner {
     border-bottom: 1px solid var(--border);
     margin-bottom: 10px;
     flex:1;
+    max-height: 50%;
 }
 
 main .top-banner h1 {
@@ -136,8 +138,8 @@ main .top-banner h1 {
 }
 
 button {
-    background-color: var(--accent);
-    color: var(--button-text);
+    background-color: var(--button-bg);
+    color: var(--text);
     border: none;
     padding: 10px 20px;
     border-radius: 8px;
@@ -151,6 +153,15 @@ main .top-banner button:hover {
 }
 
 /*  Subjects seite  */
+.subjectsContent{
+    flex: 5;
+    overflow-y: auto;
+    width: 100%;
+    gap: 2rem;
+    box-sizing: border-box;
+    padding: 2rem;
+}
+
 .subject {
     background-color: var(--card);
     border: 1px solid var(--border);
@@ -160,11 +171,30 @@ main .top-banner button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    text-decoration: none;
+    color: inherit;
+    font-size: larger;
 }
 
 .subject:hover {
     border-color: var(--accent);
     transform: translateY(-5px);
+}
+
+#addSubjectForm{
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+#addSubjectForm.hidden{
+    display: none;
+}
+
+#addSubjectForm input[type="text"]{
+    background-color: var(--muted-bg);
+    padding:10px 20px;
+    border-radius: 10px;
+    border: none;
 }
 
 /*  singleSubject  */
@@ -217,6 +247,26 @@ main .top-banner button:hover {
     flex-direction:column;
     align-items:flex-start;
     padding:10px;
+}
+
+#pruefungs-container .line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+#pruefungs-container .line .left,
+#pruefungs-container .line .right {
+  flex: 0; /* nur so breit wie Inhalt */
+}
+
+#pruefungs-container .line .lineElement{
+    color:var(--text);
+    background-color: transparent;
+    border:none;
+    font-size: larger;
+    font-weight: bold;
 }
 
 #pomodoro-container {

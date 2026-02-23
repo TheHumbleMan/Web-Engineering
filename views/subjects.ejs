@@ -5,7 +5,7 @@
     <title>subjects</title>
     <link rel="stylesheet" href="/assets/style.css">
     <script defer src="/assets/theme.js"></script>
-    <script src="/assets/subjectstest.js" defer></script>
+    <script src="/assets/subjects.js" defer></script>
 
 
 </head>
@@ -15,7 +15,6 @@
         <a href="google.com">Notenübersicht</a>
         <a href="/todo">Lernplan</a>
         <a href="/auth/login">Abmelden</a>
-        <a href="google.com">Google</a>
 
         <label class="theme-toggle">
             <input type="checkbox" id="toggle">
@@ -28,20 +27,23 @@
 
     </nav>
 </header>
-<main class="gridAddon">
+<main>
     <div class="top-banner">
         <h1>Hallo <%= currentUser ? currentUser.prename + ' ' + currentUser.lastname : 'Nutzer' %></h1>
-        <button>Create subject</button>
+        <form id="addSubjectForm" action="/subjects/add" method="POST" class="hidden">
+            <input type="text" name="name" placeholder="Fachname" required>
+            <button id="addSubjectBtn" type="submit">Erstellen</button>
+        </form>
+        <button id="inBtn">Neues Fach hinzufügen</button>
     </div>
-    <div class="subject"></div> <!-- Backend Code um diese subjects in js zu erzeugen -->
-    <div class="subject"></div>
-    <div class="subject"></div>
-    <div class="subject"></div>
-    <div class="subject"></div>
-    <div class="subject"></div>
-    <div class="subject"></div>
-    <div class="subject"></div>
-    <div class="subject"></div>
+
+    <div class="subjectsContent gridAddon">
+        <% subjects.forEach(subject => { %>
+            <a href="/subjects/<%= subject.id %>" class="subject">
+                <%= subject.name %>
+            </a>
+        <% }) %>
+    </div>
 </main>
 <footer>
 
