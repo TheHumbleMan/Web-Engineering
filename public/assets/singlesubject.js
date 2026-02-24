@@ -18,11 +18,15 @@ saveBtn.addEventListener("click", async () => {
     updateSessionStorage()
     const subjectId = window.location.pathname.split("/").pop();
     const subjectData = JSON.parse(sessionStorage.getItem(subjectId));
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
 
     // POST an Backend
     const response = await fetch(`/subjects/${subjectId}/save`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json",
+            "x-csrf-token": csrfToken || ""
+        },
         body: JSON.stringify(subjectData)
     });
 

@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs/promises");
+const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 
@@ -25,6 +26,29 @@ app.use(
         }
     })
 );
+
+app.use((req, res, next) => {
+    if (!req.session.csrfToken) {
+        req.session.csrfToken = crypto.randomBytes(32).toString("hex");
+    }
+    res.locals.csrfToken = req.session.csrfToken;
+    next();
+});
+
+app.use((req, res, next) => {
+    const safeMethods = ["GET", "HEAD", "OPTIONS"];
+    if (safeMethods.includes(req.method)) {
+        return next();
+    }
+
+    const requestToken = req.body?._csrf || req.get("x-csrf-token");
+    if (!requestToken || requestToken !== req.session.csrfToken) {
+        return res.status(403).send("Invalid CSRF token");
+    }
+
+    next();
+});
+
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 app.use("/img", express.static(path.join(__dirname, "img")));
 

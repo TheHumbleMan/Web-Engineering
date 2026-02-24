@@ -68,6 +68,7 @@
 <div id="login-form">
     <h1>Login</h1>
     <form method="POST" action="/auth/login">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <label for="username">Benutzername</label>
         <input id="username" name="username" type="text" required autofocus>
 
