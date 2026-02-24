@@ -4,6 +4,16 @@ const fs = require("fs/promises");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
+require("dotenv").config();
+
+const SESSION_SECRET_MIN_LENGTH = 32;
+const sessionSecret = process.env.SESSION_SECRET;
+
+if (typeof sessionSecret !== "string" || sessionSecret.trim().length < SESSION_SECRET_MIN_LENGTH) {
+    throw new Error(
+        `SESSION_SECRET fehlt oder ist zu kurz. Setze ein sicheres Secret in .env (mindestens ${SESSION_SECRET_MIN_LENGTH} Zeichen).`
+    );
+}
 
 const app = express();
 app.set("view engine", "ejs");
@@ -17,7 +27,7 @@ app.use(express.urlencoded({ extended: true })); // für POST form data
 app.use(express.json());
 app.use(
     session({
-        secret: process.env.SESSION_SECRET || "web-engineering-secret",
+        secret: sessionSecret,
         resave: false,
         saveUninitialized: false,
         cookie: {

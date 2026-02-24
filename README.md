@@ -7,6 +7,17 @@
 ## Abhängigkeiten installieren
 
 - npm install
+
+## Umgebungsvariablen konfigurieren
+
+- `.env` im Projektordner anlegen
+- sicheren Wert für `SESSION_SECRET` setzen (mindestens 32 Zeichen)
+- Beispiel:
+
+```env
+SESSION_SECRET=dein-sehr-langes-zufaelliges-secret-mit-mindestens-32-zeichen
+```
+
 ## Anwendung starten
 
 - node app.js (aktuell eine Übergangslösung bis richtiges Backend existiert)
