@@ -8,7 +8,12 @@ const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+app.use('/favicon', express.static(path.join(__dirname, 'favicon'), {
+    maxAge: '1d',
+    immutable: true
+}));
 app.use(express.urlencoded({ extended: true })); // für POST form data
+app.use(express.json());
 app.use(
     session({
         secret: process.env.SESSION_SECRET || "web-engineering-secret",
@@ -49,6 +54,12 @@ async function loadUsers() {
     }
 }
 
+async function loadUserData(username){
+    const filePath = path.join(__dirname, "data", "userdata", `${username}.json`);
+    const rawData = await fs.readFile(filePath, "utf8");
+    return JSON.parse(rawData);
+}
+
 async function saveUsers(data) {
     await ensureDataStore();
     await fs.writeFile(USERS_FILE, JSON.stringify(data, null, 2));
@@ -79,15 +90,36 @@ app.get("/auth/register", (req, res) => {
 app.get("/about", (req, res) => {
     res.render("about", { error: req.query.error, success: req.query.success });
 })
-app.get("/subjects", requireLogin, (req, res) => {
+app.get("/subjects", requireLogin, async (req, res) => {
+    const userData = await loadUserData(req.session.user.username);
     res.render("subjects", {
         error: req.query.error,
         success: req.query.success,
-        currentUser: req.session.user
+        currentUser: req.session.user,
+        subjects: userData.subjects
     });
 })
-app.get("/subject", (req, res) => {
-    res.render("subject", { error: req.query.error, success: req.query.success });
+app.get("/subjects/:id", requireLogin, async (req, res)=>{
+    const username = req.session.user.username;
+    if(!username) {
+        return res.redirect("/auth/login")
+    };
+
+    const userData = await loadUserData(username);
+    const subjectID = req.params.id;
+    if(!userData || !userData.subjects) {
+        return res.redirect("/subjects?error=Data error")
+    };
+
+    const subject = userData.subjects.find(s => s.id === subjectID);
+    if(!subject){
+        return res.redirect("/subjects?error=Subject not found");
+    }
+
+    res.render("subject", {
+        currentUser: req.session.user,
+        subject: subject
+    });
 })
 app.get("/timer", (req, res) => {
     res.render("timer", { error: req.query.error, success: req.query.success });
@@ -128,6 +160,20 @@ app.post("/auth/register", async (req, res) => {
         password_hash: passwordHash
     });
     await saveUsers(usersData);
+
+    const userFilePath = path.join(__dirname, "data", "userdata", `${cleanUsername}.json`);
+    const defaultUserData = {
+        subjects: []
+    };
+
+    try {
+        await fs.writeFile(userFilePath, JSON.stringify(defaultUserData, null, 2), "utf8");
+    } catch (err) {
+        console.error("Fehler beim Anlegen der User-Datei:", err);
+        return res.redirect("/auth/register?error=file");
+    }
+
+
     return res.redirect("/auth/login?success=created");
 });
 
@@ -140,7 +186,7 @@ app.post("/auth/login", async (req, res) => {
         (user) => String(user.username) === String(username).trim()
     );
     if (!candidate) return res.redirect("/auth/login?error=invalid");
-
+    
     const match = await bcrypt.compare(password, candidate.password_hash);
     if (!match) return res.redirect("/auth/login?error=invalid");
 
@@ -150,6 +196,77 @@ app.post("/auth/login", async (req, res) => {
         username: candidate.username
     };
     return res.redirect("/subjects?success=login");
+});
+
+app.post("/subjects/add", requireLogin, async (req, res) => {
+    const username = req.session.user.username;
+    const userData = await loadUserData(username);
+
+    const { name } = req.body;
+    if (!name) {
+        return res.redirect("/subjects?error=noname");
+    }
+
+    // Neue Subject-ID generieren timestamp damit sich keine IDs doppeln
+    const newSubject = {
+        id: `subject${Date.now()}`,
+        name: name.trim(),
+        examDate:"",
+        grade:"",
+        note: "",
+        todos: []
+    };
+
+    userData.subjects.push(newSubject);
+    const filePath = path.join(__dirname, "data", "userdata", `${username}.json`);
+    await fs.writeFile(filePath, JSON.stringify(userData, null, 2), "utf8");
+
+    // Seite neu laden, um das neue Subject zu sehen
+    return res.redirect("/subjects?success=created");
+});
+
+app.post("/subjects/delete", requireLogin, async (req, res) => {
+    const username = req.session.user.username;
+    const userData = await loadUserData(username);
+
+    const { id } = req.body;
+    if (!id) {
+        return res.redirect("/subjects?error=noID");
+    }
+
+    const initialLength = userData.subjects.length;
+    userData.subjects = userData.subjects.filter(s=> s.id != id);
+    if(userData.subjects.length === initialLength){
+        return res.redirect(`/subjects/${id}?error=notfound`);
+    }
+
+    const filePath = path.join(__dirname, "data", "userdata", `${username}.json`);
+    await fs.writeFile(filePath, JSON.stringify(userData, null, 2), "utf8");
+
+    // Zurück zur übersicht
+    return res.redirect("/subjects?success=deleted");
+});
+
+app.post("/subjects/:id/save", requireLogin, async (req, res) => {
+    const username = req.session.user.username;
+    const subjectId = req.params.id;
+    const userData = await loadUserData(username);
+
+    const subject = userData.subjects.find(s => s.id === subjectId);
+    if (!subject) {
+        return res.status(404).send("Subject nicht gefunden");
+    }
+
+    const { examDate, grade, todos, notes } = req.body;
+    subject.examDate = examDate;
+    subject.grade = grade;
+    subject.todos = todos;
+    subject.note = notes;
+
+    const filePath = path.join(__dirname, "data", "userdata", `${username}.json`);
+    await fs.writeFile(filePath, JSON.stringify(userData, null, 2), "utf8");
+
+    res.sendStatus(200);
 });
 
 app.listen(3000, "127.0.0.1", () => console.log("Listening on http://127.0.0.1:3000"));

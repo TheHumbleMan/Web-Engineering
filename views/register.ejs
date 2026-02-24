@@ -4,31 +4,29 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Register</title>
-    <link id="theme-style" rel="stylesheet" href="/assets/dark.css">
+    <link rel="icon" type="image/png" href="/favicon/study_icon.png">
+    <link rel="stylesheet" href="/assets/style.css">
     <script defer src="/assets/theme.js"></script>
 </head>
 <body>
 
-<nav id="navbar">
-    <div id="nav-inner">
-        <ul id="nav-center">
-            <li><a id="active-link" href="/auth/register">Register</a></li>
-            <li><a href="/auth/login">Login</a></li>
-            <li><a href="/about">About</a></li>
-        </ul>
+<header>
+    <nav>
+        <a id="active-link" href="/auth/register">Register</a>
+        <a href="/auth/login">Login</a>
+        <a href="/about">About</a>
 
-        <div id="dark-mode-switch">
-            <label id="toggle-switch">
-                <input id="toggle" type="checkbox">
-                <span id="slider">
-                    <div id="background"></div>
-                    <div id="star-1"></div>
-                    <div id="star-2"></div>
-                </span>
-            </label>
-        </div>
-    </div>
-</nav>
+        <label class="theme-toggle">
+            <input type="checkbox" id="toggle">
+            <span class="slider round">
+                <div class="background"></div>
+                <div class="star"></div>
+                <div class="star"></div>
+            </span>
+        </label>
+
+    </nav>
+</header>
 
 <% if (error) { %>
     <div id="error-message">

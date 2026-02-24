@@ -1,22 +1,10 @@
 {
-  "users": [
+    "users": [
     {
-      "prename": "Max",
-      "lastname": "Mustermann",
-      "username": "User",
-      "password_hash": "$2a$10$dya58gpkYZG2PQJZpr3cS.KdyNDIip0vM6UuuuaZvM/DXGIl.Q8hm"
-    },
-    {
-      "prename": "Christian",
-      "lastname": "Hartmann",
-      "username": "Chruisi",
-      "password_hash": "$2a$10$.QGhlchZMFoGGy/A51v0XO6yFX1qCsfch1YW3/C9RVYzSKGu6geTG"
-    },
-    {
-      "prename": "Christian",
-      "lastname": "Hartmann",
-      "username": "Chruisi2",
-      "password_hash": "$2a$10$FztJrjifAfqll6Wz1/CdOusgYT2DmkCCLJ9E4pB55dsmE7120rgSS"
+        "prename": "Max",
+        "lastname": "Mustermann",
+        "username": "User",
+        "password_hash": "$2a$10$dya58gpkYZG2PQJZpr3cS.KdyNDIip0vM6UuuuaZvM/DXGIl.Q8hm"
     }
-  ]
+    ]
 }

@@ -2,17 +2,18 @@
 <html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>Angeklicktes Fach</title>
+    <title><%= subject.name %></title>
+    <link rel="icon" type="image/png" href="/favicon/study_icon.png">
+    <link rel="stylesheet" href="/assets/style.css">
     <script defer src="/assets/theme.js"></script>
     <script defer src="/assets/pomodoro.js"></script>
-    <!--<link id="theme-style" rel="stylesheet" href="/assets/subjectdark.css">-->
-    <link id="theme-style" rel="stylesheet" href="/assets/singleSubjectDark.css">
+    <script src="/assets/singlesubject.js" defer></script>
 </head>
 <body>
 <header>
     <nav>
         <a href="google.com">Notenübersicht</a>
-        <a href="google.com">Lernplan</a>
+        <a href="/todo">Lernplan</a>
         <a href="subjects">Zurück zur Übersicht </a>
         <a href="/auth/login">Abmelden</a>
 
@@ -29,8 +30,18 @@
 </header>
 <main>
     <div class="top-banner">
-        <h1>Name des angeklickten Fachs</h1> <!-- hier backend Code einfügen mit Variablen und so, dass Name variabel wird -->
-        <button>Create subject</button>
+        <h1 id="name"><%= subject.name %></h1>
+
+        <button id="saveSubjectBtn">Speichern</button>
+        <!-- Lösch-Formular -->
+        <form
+            action="/subjects/delete"
+            method="POST"
+            onsubmit="return confirm('Willst du dieses Fach wirklich löschen?');">
+
+            <input type="hidden" name="id" value="<%= subject.id %>">
+            <button type="submit" class="delete-btn">Fach löschen</button>
+        </form>
     </div>
 
     <div class="content">
@@ -39,7 +50,7 @@
         <div class="noteblock">
             <div class="subject" id="note-container">
                 <h2>Notizen</h2>
-                <textarea placeholder="Notizen..." id="note-textarea"></textarea>
+                <textarea placeholder="Notizen..." id="note-textarea"><%= subject.note %></textarea>
             </div>
         </div>
 
@@ -47,8 +58,21 @@
         <div class="sidebar">
 
             <div id="pruefungs-container" class="subject">
-                <h2>Prüfungsdatum:</h2>
-                <h2>Note: </h2>
+                <div class="line">
+                    <h2 class="left">Prüfungsdatum:</h2>
+                    <input class="right lineElement"
+                        type="date"
+                        id="examDate"
+                        value="<%=subject.examDate || ''%>"
+                        placeholder="-----">
+                </div>
+                <div class="line">
+                    <h2 class="left">Note:</h2>
+                    <input class="right lineElement"
+                        id="grade"
+                        value="<%=subject.grade || ''%>"
+                        placeholder="-----">
+                </div>
             </div>
             
             <div id="pomodoro-container" class="subject">
@@ -63,19 +87,59 @@
                 </div>
             </div>
 
+            <div id="todoPopup">
+                <label>
+                    Aufgabe:
+                    <input type="text" id="todoName">
+                </label><br><br>
+                <label>
+                    Priorität:
+                    <select id="todoPriority">
+                    <option value="niedrig">Niedrig</option>
+                    <option value="mittel">Mittel</option>
+                    <option value="hoch">Hoch</option>
+                    </select>
+                </label><br><br>
+                <label>
+                    Fälligkeitsdatum:
+                    <input type="date" id="todoDueDate">
+                </label><br><br>
+                <div class="line">
+                    <button onclick="submitTodo()">Hinzufügen</button>
+                    <button onclick="closePopup()">Abbrechen</button>
+                </div>
+            </div>
+
             <div id="todos-container" class="subject">
                 <div id="todo-headline">
                     <h2>Todos:</h2>
-                    <button>Neues Todo</button>
+                    <button id="addTodo">Neues Todo</button>
                 </div>
+                <% subject.todos.forEach(todo => {
+                    let color = "black";
 
-                <div class="singletodo">
-                    <input type="checkbox" id="notify">
-                    <div>
-                        Aufgabe 1 machen
+                    if (todo.prio === "low") color = "green";
+                    if (todo.prio === "medium") color = "orange";
+                    if (todo.prio === "high") color = "red";
+                %>
+
+                    <div class="singletodo">
+                        <input type="checkbox"<%= todo.done === "true" ? "checked" : "" %>>
+                        <div class="todo-text"
+                            data-id="<%= todo.id %>"
+                            data-done="<%= todo.done %>"
+                            data-prio="<%= todo.prio %>"
+                            data-dueDate="<%= todo.dueDate %>">
+                            
+                            <%= todo.text %>
+                        </div>
+
+                        <div class="dueDate">
+                            Fällig: <%= todo.dueDate %>
+                        </div>
                     </div>
-                    <div class="dueDate">Fällig: 12.12.2012</div>
-                </div>
+
+                <% }) %>
             </div>
         </div>
     </div>
