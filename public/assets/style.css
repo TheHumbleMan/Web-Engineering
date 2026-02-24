@@ -536,7 +536,37 @@ main .top-banner button:hover {
     box-shadow: 0 0 0 3px rgba(147,197,253,0.15);
 }
 
-#login-form button {
+#login-form .password-field {
+    position: relative;
+    width: 100%;
+}
+
+#login-form .password-field input {
+    padding-right: 52px;
+}
+
+#login-form .password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    margin: 0;
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+}
+
+#login-form .password-toggle:hover {
+    background: rgba(147,197,253,0.22);
+}
+
+#login-form button[type="submit"] {
     margin-top: 6px;
     padding: 12px;
     border-radius: 10px;
@@ -547,7 +577,7 @@ main .top-banner button:hover {
     cursor: pointer;
 }
 
-#login-form button:hover {
+#login-form button[type="submit"]:hover {
     background: rgba(147,197,253,0.22);
 }
 /* ABOUT  */

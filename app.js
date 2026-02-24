@@ -30,6 +30,36 @@ app.use("/img", express.static(path.join(__dirname, "img")));
 
 const DATA_DIR = path.join(__dirname, "data");
 const USERS_FILE = path.join(DATA_DIR, "users.json");
+const PASSWORD_MIN_LENGTH = 8;
+const LOGIN_ATTEMPT_LIMIT = 5;
+const LOGIN_WINDOW_MS = 60 * 1000;
+const loginAttemptsByIp = new Map();
+
+function isStrongPassword(password) {
+    if (typeof password !== "string") return false;
+    return (
+        password.length >= PASSWORD_MIN_LENGTH &&
+        /[a-z]/.test(password) &&
+        /[A-Z]/.test(password) &&
+        /\d/.test(password) &&
+        /[\W_]/.test(password)
+    );
+}
+
+function isLoginRateLimited(ipAddress) {
+    const now = Date.now();
+    const attempts = loginAttemptsByIp.get(ipAddress) || [];
+    const recentAttempts = attempts.filter((timestamp) => now - timestamp < LOGIN_WINDOW_MS);
+
+    if (recentAttempts.length >= LOGIN_ATTEMPT_LIMIT) {
+        loginAttemptsByIp.set(ipAddress, recentAttempts);
+        return true;
+    }
+
+    recentAttempts.push(now);
+    loginAttemptsByIp.set(ipAddress, recentAttempts);
+    return false;
+}
 
 async function ensureDataStore() {
     await fs.mkdir(DATA_DIR, { recursive: true });
@@ -136,6 +166,9 @@ app.post("/auth/register", async (req, res) => {
     if (passwordone !== passwordtwo) {
         return res.redirect("/auth/register?error=mismatch");
     }
+    if (!isStrongPassword(passwordone)) {
+        return res.redirect("/auth/register?error=password");
+    }
 
     const cleanUsername = String(username).trim();
     const cleanPrename = String(prename).trim();
@@ -146,7 +179,7 @@ app.post("/auth/register", async (req, res) => {
 
     const usersData = await loadUsers();
     const existing = usersData.users.find(
-        (user) => String(user.username).toLowerCase() === cleanUsername.toLowerCase()
+        (user) => String(user.username) === cleanUsername
     );
     if (existing) {
         return res.redirect("/auth/register?error=exists");
@@ -178,6 +211,11 @@ app.post("/auth/register", async (req, res) => {
 });
 
 app.post("/auth/login", async (req, res) => {
+    const clientIp = req.ip || req.socket?.remoteAddress || "unknown";
+    if (isLoginRateLimited(clientIp)) {
+        return res.redirect("/auth/login?error=ratelimit");
+    }
+
     const { username, password } = req.body;
     if (!username || !password) return res.redirect("/auth/login?error=required");
 
