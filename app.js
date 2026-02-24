@@ -8,6 +8,10 @@ const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+app.use('/favicon', express.static(path.join(__dirname, 'favicon'), {
+    maxAge: '1d',
+    immutable: true
+}));
 app.use(express.urlencoded({ extended: true })); // für POST form data
 app.use(express.json());
 app.use(
@@ -80,7 +84,6 @@ app.get("/about", (req, res) => {
     res.render("about", { error: req.query.error, success: req.query.success });
 })
 app.get("/subjects", requireLogin, async (req, res) => {
-    console.log("req.session.user = " + req.session.user.username)
     const userData = await loadUserData(req.session.user.username);
     res.render("subjects", {
         error: req.query.error,
