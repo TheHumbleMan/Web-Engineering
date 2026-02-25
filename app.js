@@ -191,7 +191,14 @@ app.get("/timer", (req, res) => {
 app.get("/todo", (req, res) => {
     res.render("todo", { error: req.query.error, success: req.query.success });
 })
+app.get("/grades", requireLogin, async (req, res) => {
+    const userData = await loadUserData(req.session.user.username);
 
+    res.render("grades", {
+        currentUser: req.session.user,
+        subjects: userData.subjects
+    });
+});
 app.post("/auth/register", async (req, res) => {
     const { prename, lastname, username, passwordone, passwordtwo } = req.body;
     if (!prename || !lastname || !username || !passwordone || !passwordtwo) {
