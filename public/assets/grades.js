@@ -6,10 +6,20 @@
     const gradeListEl = document.getElementById("grade-list");
     const graphEl = document.getElementById("graph");
 
+    // DEBUG: hilft sofort zu sehen, ob das Script läuft
+    console.log("[grades.js] loaded", { listBox, graphBox, gradeListEl, graphEl });
+
     if (!listBox || !graphBox || !gradeListEl || !graphEl) return;
 
-    // Layout (links Liste, rechts Graph) – ohne deine style.css zu ändern
-    // (setzt nur Inline-Styles für diesen Bereich)
+    // Fallback für randomUUID (falls crypto.randomUUID nicht existiert)
+    const makeId = () => {
+        if (globalThis.crypto && typeof globalThis.crypto.randomUUID === "function") {
+            return globalThis.crypto.randomUUID();
+        }
+        return "id-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2);
+    };
+
+    // Layout
     const main = listBox.closest("main");
     if (main) {
         main.style.display = "flex";
@@ -22,7 +32,6 @@
     graphBox.style.flex = "1";
     graphBox.style.minWidth = "320px";
 
-    // kleine Card-Optik passend zu deinen Variablen
     for (const el of [listBox, graphBox]) {
         el.style.border = "1px solid var(--border)";
         el.style.borderRadius = "15px";
@@ -31,45 +40,112 @@
         el.style.overflow = "auto";
     }
 
-    // Beispieldaten: Fach, Note, Datum, Titel
+    // ----- Daten -----
     const grades = [
-        { subject: "Mathe",    date: "2025-09-10", grade: 3.0, title: "Test: Lineare Funktionen" },
-        { subject: "Mathe",    date: "2025-10-05", grade: 2.0, title: "Klassenarbeit: Gleichungen" },
-        { subject: "Mathe",    date: "2025-11-18", grade: 2.3, title: "Kurztest: Ableitungen" },
-        { subject: "Mathe",    date: "2026-01-20", grade: 1.7, title: "Klassenarbeit: Analysis" },
+        { id: makeId(), subject: "Mathe",    date: "2025-09-10", grade: 3.0, title: "Test: Lineare Funktionen" },
+        { id: makeId(), subject: "Mathe",    date: "2025-10-05", grade: 2.0, title: "Klassenarbeit: Gleichungen" },
+        { id: makeId(), subject: "Mathe",    date: "2025-11-18", grade: 2.3, title: "Kurztest: Ableitungen" },
+        { id: makeId(), subject: "Mathe",    date: "2026-01-20", grade: 1.7, title: "Klassenarbeit: Analysis" },
 
-        { subject: "Deutsch",  date: "2025-09-22", grade: 2.7, title: "Aufsatz: Analyse" },
-        { subject: "Deutsch",  date: "2025-10-28", grade: 2.0, title: "Referat: Lyrik" },
-        { subject: "Deutsch",  date: "2025-12-09", grade: 1.7, title: "Klausur: Interpretation" },
+        { id: makeId(), subject: "Deutsch",  date: "2025-09-22", grade: 2.7, title: "Aufsatz: Analyse" },
+        { id: makeId(), subject: "Deutsch",  date: "2025-10-28", grade: 2.0, title: "Referat: Lyrik" },
+        { id: makeId(), subject: "Deutsch",  date: "2025-12-09", grade: 1.7, title: "Klausur: Interpretation" },
 
-        { subject: "Englisch", date: "2025-09-15", grade: 2.3, title: "Vocabulary Test" },
-        { subject: "Englisch", date: "2025-11-03", grade: 1.7, title: "Essay" },
-        { subject: "Englisch", date: "2026-01-12", grade: 2.0, title: "Listening" },
+        { id: makeId(), subject: "Englisch", date: "2025-09-15", grade: 2.3, title: "Vocabulary Test" },
+        { id: makeId(), subject: "Englisch", date: "2025-11-03", grade: 1.7, title: "Essay" },
+        { id: makeId(), subject: "Englisch", date: "2026-01-12", grade: 2.0, title: "Listening" },
 
-        { subject: "Physik",   date: "2025-10-01", grade: 3.3, title: "Test: Bewegung" },
-        { subject: "Physik",   date: "2025-11-25", grade: 2.7, title: "Kurztest: Kräfte" },
-        { subject: "Physik",   date: "2026-01-28", grade: 2.0, title: "Klassenarbeit: Energie" },
+        { id: makeId(), subject: "Physik",   date: "2025-10-01", grade: 3.3, title: "Test: Bewegung" },
+        { id: makeId(), subject: "Physik",   date: "2025-11-25", grade: 2.7, title: "Kurztest: Kräfte" },
+        { id: makeId(), subject: "Physik",   date: "2026-01-28", grade: 2.0, title: "Klassenarbeit: Energie" },
     ].slice().sort((a, b) => a.date.localeCompare(b.date));
-
-    const subjects = [...new Set(grades.map(g => g.subject))].sort();
-    let activeSubject = subjects[0] ?? "";
 
     const fmtDate = (iso) => new Date(iso + "T00:00:00").toLocaleDateString("de-DE");
 
-    function groupBySubject(items) {
-        const m = new Map();
-        for (const g of items) {
-            if (!m.has(g.subject)) m.set(g.subject, []);
-            m.get(g.subject).push(g);
+    // subject -> array
+    const bySubject = new Map();
+    function rebuildIndex() {
+        bySubject.clear();
+        for (const g of grades) {
+            if (!bySubject.has(g.subject)) bySubject.set(g.subject, []);
+            bySubject.get(g.subject).push(g);
         }
-        for (const [k, arr] of m) arr.sort((a, b) => a.date.localeCompare(b.date));
-        return m;
+        for (const [_, arr] of bySubject) arr.sort((a, b) => a.date.localeCompare(b.date));
+    }
+    rebuildIndex();
+
+    function getSubjects() {
+        return [...bySubject.keys()].sort();
     }
 
-    const bySubject = groupBySubject(grades);
+    let activeSubject = getSubjects()[0] ?? "";
 
-    // ----------- LISTE -----------
+    // ----- CRUD -----
+    function addGrade({ subject, date, grade, title }) {
+        grades.push({
+            id: crypto.randomUUID(),
+            subject,
+            date,
+            grade,
+            title,
+        });
+        grades.sort((a, b) => a.date.localeCompare(b.date));
+        rebuildIndex();
+    }
+
+    function deleteGradeById(id) {
+        const idx = grades.findIndex(g => g.id === id);
+        if (idx === -1) return;
+        const removed = grades[idx];
+        grades.splice(idx, 1);
+        rebuildIndex();
+
+        // wenn aktives Fach leer wird -> auf erstes verfügbare Fach springen
+        const data = bySubject.get(activeSubject) ?? [];
+        if (activeSubject === removed.subject && data.length === 0) {
+            activeSubject = getSubjects()[0] ?? "";
+        }
+    }
+
+    // ----- UI: Grade erstellen -----
+    // nutzt deinen vorhandenen "Grade erstellen"-Button, wenn du ihm diese ID gibst:
+    // <button id="create-grade-btn">...</button>
+    // Falls nicht vorhanden, wird pro Fach ein "Neu"-Button angezeigt (im Kopf).
+    const externalCreateBtn = document.getElementById("create-grade-btn");
+
+    function openCreateDialog(defaultSubject = activeSubject) {
+        const subjects = getSubjects();
+        const s = prompt(`Fach (${subjects.join(", ")}):`, defaultSubject || subjects[0] || "Mathe");
+        if (s == null) return;
+
+        const title = prompt("Titel (z.B. Klassenarbeit / Test):", "Neue Note");
+        if (title == null) return;
+
+        const date = prompt("Datum (YYYY-MM-DD):", new Date().toISOString().slice(0, 10));
+        if (date == null) return;
+
+        const gStr = prompt("Note (1.0 - 6.0):", "2.0");
+        if (gStr == null) return;
+
+        const g = Number(gStr.replace(",", "."));
+        if (!Number.isFinite(g) || g < 1 || g > 6) {
+            alert("Ungültige Note. Bitte 1.0 bis 6.0.");
+            return;
+        }
+
+        addGrade({ subject: s.trim() || "Unbekannt", date: date.trim(), grade: g, title: title.trim() || "Neue Note" });
+        activeSubject = s.trim() || activeSubject;
+        renderList();
+        renderGraph(activeSubject);
+    }
+
+    if (externalCreateBtn) {
+        externalCreateBtn.addEventListener("click", () => openCreateDialog(activeSubject));
+    }
+
+    // ----- LISTE -----
     function renderList() {
+        const subjects = getSubjects();
         gradeListEl.innerHTML = "";
         gradeListEl.style.display = "flex";
         gradeListEl.style.flexDirection = "column";
@@ -93,14 +169,32 @@
             title.textContent = subject;
             title.style.fontWeight = "800";
 
-            const btn = document.createElement("button");
-            btn.textContent = "Anzeigen";
-            btn.style.padding = "8px 12px";
-            btn.style.borderRadius = "10px";
-            btn.addEventListener("click", () => setActiveSubject(subject));
+            const right = document.createElement("div");
+            right.style.display = "flex";
+            right.style.gap = "8px";
+
+            // pro Fach "Neu" (falls du keinen externen Button nutzt)
+            if (!externalCreateBtn) {
+                const newBtn = document.createElement("button");
+                newBtn.textContent = "Neu";
+                newBtn.style.padding = "8px 12px";
+                newBtn.style.borderRadius = "10px";
+                newBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    openCreateDialog(subject);
+                });
+                right.appendChild(newBtn);
+            }
+
+            const showBtn = document.createElement("button");
+            showBtn.textContent = "Anzeigen";
+            showBtn.style.padding = "8px 12px";
+            showBtn.style.borderRadius = "10px";
+            showBtn.addEventListener("click", () => setActiveSubject(subject));
+            right.appendChild(showBtn);
 
             head.appendChild(title);
-            head.appendChild(btn);
+            head.appendChild(right);
             card.appendChild(head);
 
             const list = bySubject.get(subject) ?? [];
@@ -113,8 +207,9 @@
                 row.style.padding = "8px 10px";
                 row.style.borderRadius = "10px";
                 row.style.border = "1px solid var(--border)";
-                row.style.cursor = "pointer";
                 row.style.marginBottom = "8px";
+                row.style.background = "transparent";
+
                 row.addEventListener("click", () => setActiveSubject(subject));
 
                 const left = document.createElement("div");
@@ -130,12 +225,37 @@
                 left.appendChild(t);
                 left.appendChild(meta);
 
+                // rechts: Note + Löschen
+                const right = document.createElement("div");
+                right.style.display = "flex";
+                right.style.alignItems = "center";
+                right.style.gap = "10px";
+
                 const val = document.createElement("div");
                 val.textContent = g.grade.toFixed(1);
                 val.style.fontWeight = "800";
 
+                const del = document.createElement("button");
+                del.textContent = "✕";
+                del.title = "Note löschen";
+                del.style.padding = "6px 10px";
+                del.style.borderRadius = "10px";
+
+                del.addEventListener("click", (e) => {
+                    e.stopPropagation(); // nicht gleichzeitig "Anzeigen"
+                    const ok = confirm(`Note löschen?\n${subject} – ${g.title} (${fmtDate(g.date)})`);
+                    if (!ok) return;
+                    deleteGradeById(g.id);
+                    renderList();
+                    if (activeSubject) renderGraph(activeSubject);
+                    else graphEl.innerHTML = "<div style='color:var(--muted)'>Keine Fächer/Daten mehr.</div>";
+                });
+
+                right.appendChild(val);
+                right.appendChild(del);
+
                 row.appendChild(left);
-                row.appendChild(val);
+                row.appendChild(right);
                 card.appendChild(row);
             }
 
@@ -143,7 +263,7 @@
         }
     }
 
-    // ----------- GRAPH (Canvas, ohne Lib) -----------
+    // ----- GRAPH (Canvas) -----
     function renderGraph(subject) {
         const data = (bySubject.get(subject) ?? []);
         graphEl.innerHTML = "";
@@ -188,7 +308,6 @@
             const innerW = w - pad.l - pad.r;
             const innerH = h - pad.t - pad.b;
 
-            // Skala (deutsch üblich): 1.0 oben (gut) bis 6.0 unten (schlecht)
             const yMin = 1.0, yMax = 6.0;
 
             const n = data.length;
@@ -255,7 +374,6 @@
                 ctx.beginPath();
                 ctx.arc(x, y, 4, 0, Math.PI * 2);
                 ctx.fill();
-
                 ctx.fillText(data[i].grade.toFixed(1), x + 8, y + 4);
             }
 
@@ -265,7 +383,6 @@
             ctx.fillText("1.0 = besser (oben)  ·  6.0 = schlechter (unten)", pad.l, h - 6);
         };
 
-        // initial + responsive
         draw();
         const ro = new ResizeObserver(draw);
         ro.observe(canvas);
@@ -274,11 +391,9 @@
     function setActiveSubject(subject) {
         activeSubject = subject;
         renderGraph(activeSubject);
-        // optional: visuelles Feedback in der Liste (simpel)
-        [...gradeListEl.querySelectorAll("div")].forEach(() => {}); // bewusst leer, keine CSS-Klassen nötig
     }
 
     // Init
     renderList();
-    setActiveSubject(activeSubject);
+    if (activeSubject) renderGraph(activeSubject);
 })();
