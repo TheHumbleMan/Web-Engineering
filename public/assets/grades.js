@@ -6,12 +6,9 @@
     const gradeListEl = document.getElementById("grade-list");
     const graphEl = document.getElementById("graph");
 
-    // DEBUG: hilft sofort zu sehen, ob das Script läuft
-    console.log("[grades.js] loaded", { listBox, graphBox, gradeListEl, graphEl });
 
     if (!listBox || !graphBox || !gradeListEl || !graphEl) return;
 
-    // Fallback für randomUUID (falls crypto.randomUUID nicht existiert)
     const makeId = () => {
         if (globalThis.crypto && typeof globalThis.crypto.randomUUID === "function") {
             return globalThis.crypto.randomUUID();
@@ -108,9 +105,6 @@
     }
 
     // ----- UI: Grade erstellen -----
-    // nutzt deinen vorhandenen "Grade erstellen"-Button, wenn du ihm diese ID gibst:
-    // <button id="create-grade-btn">...</button>
-    // Falls nicht vorhanden, wird pro Fach ein "Neu"-Button angezeigt (im Kopf).
     const externalCreateBtn = document.getElementById("create-grade-btn");
 
     function openCreateDialog(defaultSubject = activeSubject) {
