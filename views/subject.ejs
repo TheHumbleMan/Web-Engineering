@@ -104,7 +104,7 @@
                 </label><br><br>
                 <label>
                     Fälligkeitsdatum:
-                    <input type="date" id="todoDueDate">
+                    <input type="datetime-local" id="todoDueDate">
                 </label><br><br>
                 <div class="line">
                     <button onclick="submitTodo()">Hinzufügen</button>
@@ -120,14 +120,14 @@
                 <% subject.todos.forEach(todo => {
                     let color = "black";
 
-                    if (todo.prio === "low") color = "green";
-                    if (todo.prio === "medium") color = "orange";
-                    if (todo.prio === "high") color = "red";
+                    if (todo.prio === "niedrig") color = "green";
+                    if (todo.prio === "mittel") color = "orange";
+                    if (todo.prio === "hoch") color = "red";
                 %>
 
                     <div class="singletodo">
-                        <input type="checkbox"<%= todo.done === "true" ? "checked" : "" %>>
-                        <div class="todo-text"
+                        <input id="checkbox-<%= todo.id %>" type="checkbox"<%= todo.done === "true" ? "checked" : "" %>>
+                        <div class="todo-text prio-<%= todo.prio %>"
                             data-id="<%= todo.id %>"
                             data-done="<%= todo.done %>"
                             data-prio="<%= todo.prio %>"
@@ -137,7 +137,7 @@
                         </div>
 
                         <div class="dueDate">
-                            Fällig: <%= todo.dueDate %>
+                            Fällig: <%= new Date(todo.dueDate).toLocaleString("de-DE",{dateStyle:"medium", timeStyle:"short"}); %>
                         </div>
                     </div>
 

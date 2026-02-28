@@ -11,19 +11,23 @@ function renderTodos(todos) {
     let iterator = 1;
     for (const t of todos) {
         if (t.done === "false"){
-            const dateObj = parseGermanDate(t.dueDate);
-            const ts = dateObj ? dateObj.getTime() : NaN;
-            const dateStr = Number.isFinite(ts) ? new Date(ts).toLocaleString("de-DE") : "—";
+            const ts = t.dueDate ? new Date(t.dueDate).getTime() : NaN;
+            const dateStr = Number.isFinite(ts) ? new Date(ts).toLocaleString("de-DE",{dateStyle:"medium", timeStyle:"short"}) : "—";
             const remaining = Number.isFinite(ts) ? calculateRemaining(ts) : "—";
 
             const div = document.createElement("div");
             div.className = "todo";
             div.id = `todo-${iterator}`; // fürs Scrollen von der Timeline
 
+            if (t.prio === "niedrig") prioColor = "prio-niedrig";
+            else if (t.prio === "mittel") prioColor = "prio-mittel";
+            else if (t.prio === "hoch") prioColor = "prio-hoch";
+            else prioColor = "";
+
             div.innerHTML = `
             <span class="todo-nr">${iterator}:</span>
             <span class="todo-name">${t.text}</span>
-            <span class="todo-prio">${t.prio}</span>
+            <span class="${prioColor}">${t.prio}</span>
             <span class="todo-deadline">${dateStr}</span>
             <span class="todo-remaining">${remaining}</span>
             `;
@@ -70,10 +74,9 @@ function renderTimeline(todos) {
 
     const items = todos
         .map(t => {
-            const dateObj = parseGermanDate(t.dueDate);
             return {
                 ...t,
-                ts: dateObj ? dateObj.getTime() : NaN
+                ts: t.dueDate ? new Date(t.dueDate).getTime() : NaN
             };
         })
         .filter(t => Number.isFinite(t.ts));

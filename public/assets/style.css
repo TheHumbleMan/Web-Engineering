@@ -356,6 +356,9 @@ main .top-banner button:hover {
     align-self:flex-start;
     white-space:nowrap
 }
+.prio-niedrig { color: green; }
+.prio-mittel  { color: orange; }
+.prio-hoch    { color: red; }
 
 /*  TIMER PAGE  */
 #main-timer-page {

@@ -60,8 +60,7 @@ function submitTodo() {
     const todoID = `todo${Date.now()}`;
     const text = document.getElementById("todoName").value;
     const priority = document.getElementById("todoPriority").value;
-    const isoDate = document.getElementById("todoDueDate").value;
-    const dueDate = formatGermanDate(isoDate);
+    const dueDate = document.getElementById("todoDueDate").value;
 
     if(!text || !dueDate) return alert("Name und Datum müssen ausgefüllt sein!");
 
@@ -110,12 +109,35 @@ function updateSessionStorage() {
     sessionStorage.setItem(subjectId, JSON.stringify(subjectData));
 }
 
-/**
- * Hilfsfunktion die das datumsformat von xx-xx-xxx ins
- * deutsche format xx.xx.xxx ändert
- */
-function formatGermanDate(isoDate) {
-    if (!isoDate) return "";
-    const date = new Date(isoDate);
-    return date.toLocaleDateString("de-DE");
-}
+const container = document.getElementById("todos-container"); // Parent aller Todos
+
+container.addEventListener("change", (e) => {
+    if (!e.target.matches('input[type="checkbox"]')) {
+        console.log("Nicht Checkbox, Ignoriere Event");
+        return;
+    }
+    console.log("Checkbox geändert:", e.target.id, "Checked:", e.target.checked);
+    const subjectId = window.location.pathname.split("/").pop();
+    const checkbox = e.target;
+    const todoId = checkbox.id.replace("checkbox-", "");
+
+    // Todos aus sessionStorage holen
+    const todos = JSON.parse(sessionStorage.getItem(subjectId))?.todos || [];
+
+    // Passendes Todo finden
+    const todo = todos.find(t => String(t.id) === todoId);
+    if (!todo) {
+        console.error("Todo nicht gefunden für ID:", todoId);
+        return
+    }
+
+    console.log("Checkbox:" + checkbox)
+    // done toggeln muss im DOM gemacht werden
+    const todoTextElement = checkbox.nextElementSibling;
+    console.log("Todo Text Element:", todoTextElement);
+    const newDoneValue = todo.done === "false" ? "true" : "false";
+    console.log("Neuer done Wert:", newDoneValue);
+    todoTextElement.dataset.done = newDoneValue;
+
+    updateSessionStorage();
+});

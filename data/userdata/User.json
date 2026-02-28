@@ -8,25 +8,25 @@
       "note": "",
       "todos": [
         {
-          "id": "todo1772309329787",
-          "text": "erstes",
-          "done": "false",
-          "prio": "niedrig",
-          "dueDate": "1.3.2026"
-        },
-        {
-          "id": "todo1772309342667",
-          "text": "zweites",
+          "id": "todo1772309936875",
+          "text": "bitteee",
           "done": "false",
           "prio": "mittel",
-          "dueDate": "18.3.2026"
+          "dueDate": "2026-02-20T13:45"
         },
         {
-          "id": "todo1772309355279",
-          "text": "drittes",
+          "id": "todo1772310370783",
+          "text": "Jo",
+          "done": "true",
+          "prio": "niedrig",
+          "dueDate": "2026-03-01T15:20"
+        },
+        {
+          "id": "todo1772311843082",
+          "text": "jabwf",
           "done": "false",
           "prio": "hoch",
-          "dueDate": "20.3.2026"
+          "dueDate": "2026-02-10T12:12"
         }
       ]
     }
