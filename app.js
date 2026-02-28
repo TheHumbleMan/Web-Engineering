@@ -199,6 +199,12 @@ app.get("/grades", requireLogin, async (req, res) => {
         subjects: userData.subjects
     });
 });
+app.get("/impressum", (req, res) => {
+    res.render("impressum", { error: req.query.error, success: req.query.success });
+})
+app.get("/datenschutz", (req, res) => {
+    res.render("datenschutz", { error: req.query.error, success: req.query.success });
+})
 app.post("/auth/register", async (req, res) => {
     const { prename, lastname, username, passwordone, passwordtwo } = req.body;
     if (!prename || !lastname || !username || !passwordone || !passwordtwo) {
