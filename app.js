@@ -380,4 +380,4 @@ app.post("/subjects/:id/save", requireLogin, async (req, res) => {
     res.sendStatus(200);
 });
 
-app.listen(3000, "127.0.0.1", () => console.log("Listening on http://127.0.0.1:3000"));
+app.listen(3000, "0.0.0.0", () => console.log("Listening on http://127.0.0.1:3000"));
