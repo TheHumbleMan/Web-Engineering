@@ -639,6 +639,8 @@ main .top-banner button:hover {
     flex-direction: column;
     gap: 10px;
     padding: 12px;
+    overflow-y: auto;
+    flex:15;
 }
 .todo{
     display: grid;
@@ -652,18 +654,19 @@ main .top-banner button:hover {
     border-radius: 10px;
     border: 1px solid var(--border);
 }
-
+.todo-name{width: fit-content;}
 .todo-nr { color: var(--muted); }
 .todo-prio { font-weight: 700; }
 .todo-remaining { color: var(--muted); }
 
 
-#todofooter{
-    position: fixed;
+#timeline{
+    justify-self: flex-end;
+    width:100%;
     left: 0;
     right: 0;
-    bottom: 7%;
-    height: 56px;
+    flex:1;
+    max-height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -673,6 +676,7 @@ main .top-banner button:hover {
     backdrop-filter: blur(8px);
     padding:15px;
 }
+/*
 #timeline{
     position: fixed;
     left: 0; right: 0; bottom: 0;
@@ -687,7 +691,7 @@ main .top-banner button:hover {
     box-sizing: border-box;
     z-index: 999;
 }
-
+*/
 .tl-row{
     width: 100%;
     display: flex;

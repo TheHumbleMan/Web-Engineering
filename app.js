@@ -188,8 +188,34 @@ app.get("/subjects/:id", requireLogin, async (req, res)=>{
 app.get("/timer", (req, res) => {
     res.render("timer", { error: req.query.error, success: req.query.success });
 })
-app.get("/todo", (req, res) => {
-    res.render("todo", { error: req.query.error, success: req.query.success });
+app.get("/todo", requireLogin, async(req, res) => {
+    //Das subjects objekt wird übergeben
+    const username = req.session.user.username;
+    if(!username) {
+        return res.redirect("/auth/login")
+    };
+    const userData = await loadUserData(username);
+
+    res.render("todo", {
+        error: req.query.error,
+        success: req.query.success,
+        todos: userData.subjects || []
+    });
+})
+app.get("/api/subjects", requireLogin, async (req, res) => {
+    const username = req.session.user.username;
+    if(!username) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+    try {
+        const userData = await loadUserData(username);
+        // nur die subjects zurückgeben
+        const subjects = userData.subjects || [];
+        res.json(subjects);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Serverfehler" });
+    }
 })
 app.get("/grades", requireLogin, async (req, res) => {
     const userData = await loadUserData(req.session.user.username);

@@ -1,3 +1,34 @@
 {
-  "subjects": []
+  "subjects": [
+    {
+      "id": "subject1772309318899",
+      "name": "aiwfboawbf",
+      "examDate": "",
+      "grade": "",
+      "note": "",
+      "todos": [
+        {
+          "id": "todo1772309329787",
+          "text": "erstes",
+          "done": "false",
+          "prio": "niedrig",
+          "dueDate": "1.3.2026"
+        },
+        {
+          "id": "todo1772309342667",
+          "text": "zweites",
+          "done": "false",
+          "prio": "mittel",
+          "dueDate": "18.3.2026"
+        },
+        {
+          "id": "todo1772309355279",
+          "text": "drittes",
+          "done": "false",
+          "prio": "hoch",
+          "dueDate": "20.3.2026"
+        }
+      ]
+    }
+  ]
 }
