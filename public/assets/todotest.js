@@ -22,7 +22,6 @@ function renderTodos(todos) {
         return;
     }
     container.innerHTML = "";
-    console.log("Rendering todos:", todos);
     let iterator = 1;
     for (const t of todos) {
         if (t.done === "false"){
@@ -48,7 +47,6 @@ function renderTodos(todos) {
             `;
             container.appendChild(div);
             iterator = iterator + 1;
-            console.log(iterator);
         }
     }
 }
@@ -166,7 +164,6 @@ async function loadAllTodos() {
         //alle todos aus den subjects extrahieren und nach dueDate sortieren
         const allTodos = subjects.flatMap(s => s.todos.map(t => ({ ...t, subject: s.name })));
         allTodos.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-        console.log("Loaded todos:", allTodos);
         return allTodos;
     } catch (err) {
         console.error("Fehler beim Laden der Todos:", err);

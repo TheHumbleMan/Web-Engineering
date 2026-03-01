@@ -1,6 +1,6 @@
 /**
  * @file app.js
- * @description Express-Backend für die WebApp "Lernhilfe".  
+ * @description Express-Backend für die WebApp "Lernhilfe". 
  * Stellt User-Authentifizierung, Subject-Management, Todos, Noten und Timer-Funktionen bereit.
  */
 
@@ -148,7 +148,7 @@ function isLoginRateLimited(ipAddress) {
  * 
  * - Legt das Datenverzeichnis (`DATA_DIR`) an, falls es nicht existiert.
  * - Prüft, ob die `users.json` vorhanden ist.
- *   - Falls nicht, wird eine leere Datei mit einem leeren `users`-Array erstellt.
+ * - Falls nicht, wird eine leere Datei mit einem leeren `users`-Array erstellt.
  * 
  * @async
  * @function
@@ -262,8 +262,8 @@ function requireLogin(req, res, next) {
  * 
  * Root-URL der App.
  * - Prüft, ob ein Benutzer eingeloggt ist.
- *   - Wenn ja, Weiterleitung auf die Subject-Übersichtsseite.
- *   - Wenn nein, Weiterleitung auf die Login-Seite.
+ *  - Wenn ja, Weiterleitung auf die Subject-Übersichtsseite.
+ *  - Wenn nein, Weiterleitung auf die Login-Seite.
  * 
  * @param {Object} req - Express Request-Objekt
  * @param {Object} res - Express Response-Objekt
@@ -861,6 +861,6 @@ app.post("/subjects/delete", requireLogin, async (req, res) => {
 });
 
 // =======================
-// Server starten
+// Server start
 // =======================
 app.listen(3000, "0.0.0.0", () => console.log("Listening on http://127.0.0.1:3000"));

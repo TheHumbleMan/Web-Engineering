@@ -32,7 +32,6 @@
     --knob-shift: calc(var(--toggle-w) - var(--knob) - 2 * var(--toggle-pad));
 }
 
-/*War nur in dark*/
 * { box-sizing: border-box; }
 
 html, body {
@@ -687,22 +686,7 @@ main .top-banner button:hover {
     backdrop-filter: blur(8px);
     padding:15px;
 }
-/*
-#timeline{
-    position: fixed;
-    left: 0; right: 0; bottom: 0;
-    height: 70px;
-    background: rgba(18,24,36,0.92);
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-    backdrop-filter: blur(8px);
-    display: flex;
-    align-items: center;
-    padding: 10px 16px;
-    box-sizing: border-box;
-    z-index: 999;
-}
-*/
+
 .tl-row{
     width: 100%;
     display: flex;
