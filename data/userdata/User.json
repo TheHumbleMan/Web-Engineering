@@ -4,25 +4,195 @@
       "id": "subject1772367345705",
       "name": "Netztechnik",
       "examDate": "2026-03-12",
+      "note": "Ich liebe Netztechnik!!",
+      "todos": [
+        {
+          "id": "todo1772383429171",
+          "text": "Einheit 1",
+          "done": "false",
+          "prio": "niedrig",
+          "dueDate": "2026-03-03T12:12"
+        },
+        {
+          "id": "todo1772383445336",
+          "text": "Einheit 2",
+          "done": "true",
+          "prio": "hoch",
+          "dueDate": "2026-03-05T12:12"
+        },
+        {
+          "id": "todo1772383455460",
+          "text": "Einheit 3",
+          "done": "false",
+          "prio": "mittel",
+          "dueDate": "2026-03-06T12:12"
+        },
+        {
+          "id": "todo1772383484148",
+          "text": "Formelsammlung ausdrucken",
+          "done": "false",
+          "prio": "hoch",
+          "dueDate": "2026-03-10T10:00"
+        }
+      ]
+    },
+    {
+      "id": "subject1772382929240",
+      "name": "Datenbanken",
+      "examDate": "2026-03-27",
+      "grade": "",
+      "note": "Die Intelligenz sitzt vor dem Rechner!",
+      "todos": [
+        {
+          "id": "todo1772383586951",
+          "text": "Projekt fertig machen",
+          "done": "false",
+          "prio": "hoch",
+          "dueDate": "2026-03-16T12:00"
+        },
+        {
+          "id": "todo1772383601003",
+          "text": "Projekt hochladen",
+          "done": "false",
+          "prio": "hoch",
+          "dueDate": "2026-03-18T12:00"
+        },
+        {
+          "id": "todo1772383621051",
+          "text": "Privat noch ein wenig was machen",
+          "done": "false",
+          "prio": "niedrig",
+          "dueDate": "2026-03-20T12:00"
+        },
+        {
+          "id": "todo1772383646149",
+          "text": "Lernzettel ausdrucken",
+          "done": "false",
+          "prio": "mittel",
+          "dueDate": "2026-03-23T12:00"
+        }
+      ]
+    },
+    {
+      "id": "subject1772382934683",
+      "name": "Mathe",
+      "examDate": "",
+      "grade": "",
+      "note": "",
+      "todos": []
+    },
+    {
+      "id": "subject1772382941950",
+      "name": "Theoretische Informatik",
+      "examDate": "",
+      "grade": "",
+      "note": "",
+      "todos": []
+    },
+    {
+      "id": "subject1772382951627",
+      "name": "Systemnahe Programierung",
+      "examDate": "",
+      "grade": "",
       "note": "",
       "todos": []
     }
   ],
   "grades": [
     {
-      "id": "68a2dbc9-3683-4bb5-bb82-283c73b3e714",
-      "subject": "Netztechnik",
-      "date": "2026-02-26",
+      "id": "bec55deb-fee9-404d-968d-0ba0589fb29c",
+      "subject": "Datenbanken",
+      "date": "2025-11-15",
       "grade": 2,
-      "title": "Präsentation",
+      "title": "Projekt",
       "locked": false
     },
     {
-      "id": "84ff94a0-c127-43f0-ab7c-1b9cd6867ccb",
-      "subject": "Netztechnik",
-      "date": "2026-03-02",
+      "id": "1eda7246-3929-48df-989f-02ce69d332be",
+      "subject": "Datenbanken",
+      "date": "2025-12-18",
+      "grade": 1.7,
+      "title": "Prüfung",
+      "locked": false
+    },
+    {
+      "id": "f92fd92d-c7b2-4b67-a42e-8f28f3f59fa7",
+      "subject": "Mathe",
+      "date": "2025-03-20",
+      "grade": 3.1,
+      "title": "1. Semester",
+      "locked": false
+    },
+    {
+      "id": "b4548575-f24d-476d-8069-1ace5ac98603",
+      "subject": "Mathe",
+      "date": "2025-06-27",
       "grade": 1,
-      "title": "Dokumentation",
+      "title": "2. Semester",
+      "locked": false
+    },
+    {
+      "id": "b323a947-204f-4b4c-ae99-b663d293ffb2",
+      "subject": "Mathe",
+      "date": "2025-12-20",
+      "grade": 1.7,
+      "title": "3. Semester",
+      "locked": false
+    },
+    {
+      "id": "d5072dd9-8c7d-4e9e-998d-4b4d863e53f7",
+      "subject": "Mathe",
+      "date": "2026-03-12",
+      "grade": 1,
+      "title": "4. Semester",
+      "locked": false
+    },
+    {
+      "id": "81a0d71e-3051-402a-a9a2-528e7d1fd68a",
+      "subject": "Netztechnik",
+      "date": "2025-07-18",
+      "grade": 1,
+      "title": "Klausur",
+      "locked": false
+    },
+    {
+      "id": "0425327f-9471-4f20-b334-96e86c76a807",
+      "subject": "Systemnahe Programierung",
+      "date": "2026-01-10",
+      "grade": 4,
+      "title": "Projekt",
+      "locked": false
+    },
+    {
+      "id": "f07d3237-6f38-4423-bcdd-233666c0d8f8",
+      "subject": "Systemnahe Programierung",
+      "date": "2026-2-10",
+      "grade": 1.3,
+      "title": "Projekt 2",
+      "locked": false
+    },
+    {
+      "id": "cdbe7ef7-a18c-42ae-910c-8f5e13f50fa4",
+      "subject": "Theoretische Informatik",
+      "date": "2026-01-12",
+      "grade": 5,
+      "title": "Erstprüfung",
+      "locked": false
+    },
+    {
+      "id": "ea75f492-8a50-468d-8e7a-6ea0be0aaeab",
+      "subject": "Theoretische Informatik",
+      "date": "2026-02-16",
+      "grade": 5,
+      "title": "Wiederholungsklausur",
+      "locked": false
+    },
+    {
+      "id": "482f5de4-9d2d-42ef-9f52-3060cc40d981",
+      "subject": "Theoretische Informatik",
+      "date": "2026-03-15",
+      "grade": 1,
+      "title": "Mündliche Prüfung",
       "locked": false
     }
   ]

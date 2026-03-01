@@ -1,12 +1,8 @@
 # Installation
 ## Vorraussetzungen
 
-- Node.js (node -v)
-- npm (npm -v)
-
-## Abhängigkeiten installieren
-
-- npm install
+- docker
+- aktueller Benutzer darf Docker ausführen
 
 ## Umgebungsvariablen konfigurieren
 
@@ -18,23 +14,21 @@
 SESSION_SECRET=dein-sehr-langes-zufaelliges-secret-mit-mindestens-32-zeichen
 ```
 
-## Anwendung starten
+## Image Bauen
 
-- node app.js (aktuell eine Übergangslösung bis richtiges Backend existiert)
+- In das Projektverzeichnis wechseln
+- ```docker build -t lernhilfe .```
+
+## Container Starten
+
+```docker run -p 8080:80 lernhilfe```
 
 ## Im Browser öffnen
-```http:localhost:3000/auth/login```
-oder je nach nginx Verknüfpung auch mit URL
-### Aktuell in der entwicklung noch:
-```http:localhost:3000/auth/login```
-```http:localhost:3000/subjects```
-```http:localhost:3000/subjectc```
+```http:localhost:8080```
 
 # Anmeldung
 
 Bereits ein Benutzer Angelegt:
 
-prename: Max
-lastname: Mustermann
 ```username: User```
 ```password: user```

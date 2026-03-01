@@ -863,4 +863,4 @@ app.post("/subjects/delete", requireLogin, async (req, res) => {
 // =======================
 // Server start
 // =======================
-app.listen(3000, "0.0.0.0", () => console.log("Listening on http://127.0.0.1:3000"));
+app.listen(3000, "0.0.0.0");
