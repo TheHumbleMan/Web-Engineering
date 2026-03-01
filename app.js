@@ -243,7 +243,7 @@ app.get("/api/grades", requireLogin, async (req, res) => {
 
 app.post("/api/grades", requireLogin, async (req, res) => {
     const username = req.session.user.username;
-    const { subject, date, grade, title } = req.body;
+    const { subject, date, grade, title, locked } = req.body;
     if (!subject || !date || typeof grade === 'undefined' || !title) {
         return res.status(400).json({ error: "Missing fields" });
     }
@@ -255,7 +255,8 @@ app.post("/api/grades", requireLogin, async (req, res) => {
             subject: String(subject),
             date: String(date),
             grade: Number(grade),
-            title: String(title)
+            title: String(title),
+            locked: Boolean(locked) // optional flag, default false
         };
         userData.grades.push(newGrade);
         await saveUserData(username, userData);
@@ -274,6 +275,10 @@ app.delete("/api/grades/:id", requireLogin, async (req, res) => {
         userData.grades = userData.grades || [];
         const idx = userData.grades.findIndex(g => g.id === id);
         if (idx === -1) return res.status(404).json({ error: "Not found" });
+        const grade = userData.grades[idx];
+        if (grade.locked) {
+            return res.status(403).json({ error: "Locked grade cannot be deleted" });
+        }
         userData.grades.splice(idx, 1);
         await saveUserData(username, userData);
         res.sendStatus(204);

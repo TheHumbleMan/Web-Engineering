@@ -142,8 +142,9 @@
 
     function openCreateDialog(defaultSubject = activeSubject) {
         const subjNames = [...bySubject.keys()].sort();
-        const s = prompt(`Fach (${subjNames.join(", ")}):`, defaultSubject || subjNames[0] || "Mathe");
-        if (s == null) return;
+        // Instead of asking for subject, use the defaultSubject provided by the caller
+        const s = defaultSubject || subjNames[0] || "Mathe";
+        if (!s) return;
 
         const title = prompt("Titel (z.B. Klassenarbeit / Test):", "Neue Note");
         if (title == null) return;
@@ -160,7 +161,8 @@
             return;
         }
 
-        addGrade({ subject: s.trim() || "Unbekannt", date: date.trim(), grade: g, title: title.trim() || "Neue Note" })
+        // When called from a subject-specific 'Neu' button we want the grade to be created for that subject.
+        addGrade({ subject: s.trim(), date: date.trim(), grade: g, title: title.trim() })
             .then(() => {
                 activeSubject = s.trim() || activeSubject;
                 renderList();
@@ -271,16 +273,31 @@
                 del.style.padding = "6px 10px";
                 del.style.borderRadius = "10px";
 
-                del.addEventListener("click", (e) => {
-                    e.stopPropagation(); // nicht gleichzeitig "Anzeigen"
-                    const ok = confirm(`Note löschen?\n${subject} – ${g.title} (${fmtDate(g.date)})`);
-                    if (!ok) return;
-                    deleteGradeById(g.id).then(() => {
-                        renderList();
-                        if (activeSubject) renderGraph(activeSubject);
-                        else graphEl.innerHTML = "<div style='color:var(--muted)'>Keine Fächer/Daten mehr.</div>";
+                // If grade is locked, disable delete and show badge
+                if (g.locked) {
+                    del.disabled = true;
+                    del.title = "Diese Note wurde übernommen und kann nicht gelöscht werden";
+
+                    const badge = document.createElement("span");
+                    badge.textContent = "Übernommen";
+                    badge.style.background = "var(--muted)";
+                    badge.style.color = "white";
+                    badge.style.padding = "4px 8px";
+                    badge.style.borderRadius = "8px";
+                    badge.style.fontSize = "12px";
+                    right.appendChild(badge);
+                } else {
+                    del.addEventListener("click", (e) => {
+                        e.stopPropagation(); // nicht gleichzeitig "Anzeigen"
+                        const ok = confirm(`Note löschen?\n${subject} – ${g.title} (${fmtDate(g.date)})`);
+                        if (!ok) return;
+                        deleteGradeById(g.id).then(() => {
+                            renderList();
+                            if (activeSubject) renderGraph(activeSubject);
+                            else graphEl.innerHTML = "<div style='color:var(--muted)'>Keine Fächer/Daten mehr.</div>";
+                        });
                     });
-                });
+                }
 
                 right.appendChild(val);
                 right.appendChild(del);
@@ -427,4 +444,3 @@
     // Init
     loadData();
 })();
-

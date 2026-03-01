@@ -29,6 +29,14 @@
           "dueDate": "2026-02-10T12:12"
         }
       ]
+    },
+    {
+      "id": "subject1772367345705",
+      "name": "Netztechnik",
+      "examDate": "",
+      "grade": "",
+      "note": "",
+      "todos": []
     }
   ],
   "grades": [
@@ -38,6 +46,29 @@
       "date": "2026-03-01",
       "grade": 2,
       "title": "3"
+    },
+    {
+      "id": "b033e827-3e95-4985-b5de-1efc267e4bbd",
+      "subject": "aiwfboawbf",
+      "date": "2026-03-01",
+      "grade": 3,
+      "title": "Test"
+    },
+    {
+      "id": "b3b513e1-b7f7-49ee-85e1-abb19a236be1",
+      "subject": "aiwfboawbf",
+      "date": "2026-03-01",
+      "grade": 4,
+      "title": "Klassenarbeit",
+      "locked": false
+    },
+    {
+      "id": "fb3a9861-6df1-4460-a8b4-50ee0e9be864",
+      "subject": "Netztechnik",
+      "date": "2026-03-01",
+      "grade": 2.5,
+      "title": "Prüfung",
+      "locked": false
     }
   ]
 }
