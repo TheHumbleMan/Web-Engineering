@@ -5,7 +5,6 @@
  */
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("examDate").addEventListener("change", updateSessionStorage);
-    document.getElementById("grade").addEventListener("input", updateSessionStorage);
     document.getElementById("note-textarea").addEventListener("input", updateSessionStorage);
 })
 
@@ -95,7 +94,6 @@ function updateSessionStorage() {
     const subjectId = window.location.pathname.split("/").pop();
     const name = document.getElementById("name").innerText;
     const examDate = document.getElementById("examDate").value;
-    const grade = document.getElementById("grade").value;
     const notes = document.getElementById("note-textarea").value;
     const todos = Array.from(document.querySelectorAll(".singletodo")).map(div => ({
         id : div.querySelector(".todo-text").dataset.id,
@@ -105,7 +103,7 @@ function updateSessionStorage() {
         dueDate: div.querySelector(".todo-text").dataset.duedate,
     }));
 
-    const subjectData = { subjectId, name, examDate, grade, notes, todos };
+    const subjectData = { subjectId, name, examDate, notes, todos };
     sessionStorage.setItem(subjectId, JSON.stringify(subjectData));
 }
 
@@ -141,42 +139,3 @@ container.addEventListener("change", (e) => {
 
     updateSessionStorage();
 });
-
-// --- New: handle grade creation from subject page ---
-const gradeForm = document.getElementById('create-grade-form');
-if (gradeForm) {
-    gradeForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const subject = document.getElementById('grade-subject').value;
-        const title = document.getElementById('grade-title').value;
-        const date = document.getElementById('grade-date').value;
-        const grade = Number(document.getElementById('grade-value').value);
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
-        if (!title || !date || !Number.isFinite(grade)) {
-            return alert('Bitte alle Felder ausfüllen');
-        }
-
-        try {
-            const res = await fetch('/api/grades', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...(csrfToken ? { 'x-csrf-token': csrfToken } : {})
-                },
-                body: JSON.stringify({ subject, title, date, grade, locked: true })
-            });
-            if (!res.ok) {
-                const err = await res.json().catch(()=>({error:'Fehler'}));
-                alert('Fehler beim Anlegen der Note: ' + (err.error || res.statusText));
-                return;
-            }
-            // Erfolg: reloaden, damit Durchschnitt neu berechnet wird und UI konsistent ist
-            alert('Note angelegt');
-            window.location.reload();
-        } catch (err) {
-            console.error(err);
-            alert('Fehler beim Anlegen der Note');
-        }
-    });
-}

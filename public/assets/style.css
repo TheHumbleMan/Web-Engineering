@@ -199,6 +199,14 @@ main .top-banner button:hover {
 
 /*  singleSubject  */
 
+#saveSubjectBtn{
+    background-color: green;
+}
+
+#deleteSubjectBtn{
+    background-color: red;
+}
+
 .content {
     width:100%;
     flex:18;

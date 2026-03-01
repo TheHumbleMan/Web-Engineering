@@ -440,9 +440,8 @@ app.post("/subjects/:id/save", requireLogin, async (req, res) => {
         return res.status(404).send("Subject nicht gefunden");
     }
 
-    const { examDate, grade, todos, notes } = req.body;
+    const { examDate, todos, notes } = req.body;
     subject.examDate = examDate;
-    subject.grade = grade;
     subject.todos = todos;
     subject.note = notes;
 

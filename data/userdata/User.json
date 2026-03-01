@@ -1,73 +1,28 @@
 {
   "subjects": [
     {
-      "id": "subject1772309318899",
-      "name": "aiwfboawbf",
-      "examDate": "",
-      "grade": "",
-      "note": "",
-      "todos": [
-        {
-          "id": "todo1772309936875",
-          "text": "bitteee",
-          "done": "false",
-          "prio": "mittel",
-          "dueDate": "2026-02-20T13:45"
-        },
-        {
-          "id": "todo1772310370783",
-          "text": "Jo",
-          "done": "true",
-          "prio": "niedrig",
-          "dueDate": "2026-03-01T15:20"
-        },
-        {
-          "id": "todo1772311843082",
-          "text": "jabwf",
-          "done": "false",
-          "prio": "hoch",
-          "dueDate": "2026-02-10T12:12"
-        }
-      ]
-    },
-    {
       "id": "subject1772367345705",
       "name": "Netztechnik",
-      "examDate": "",
-      "grade": "",
+      "examDate": "2026-03-12",
       "note": "",
       "todos": []
     }
   ],
   "grades": [
     {
-      "id": "1e8d4520-c27f-498c-9f7e-c5dfe583128e",
-      "subject": "aiwfboawbf",
-      "date": "2026-03-01",
+      "id": "68a2dbc9-3683-4bb5-bb82-283c73b3e714",
+      "subject": "Netztechnik",
+      "date": "2026-02-26",
       "grade": 2,
-      "title": "3"
-    },
-    {
-      "id": "b033e827-3e95-4985-b5de-1efc267e4bbd",
-      "subject": "aiwfboawbf",
-      "date": "2026-03-01",
-      "grade": 3,
-      "title": "Test"
-    },
-    {
-      "id": "b3b513e1-b7f7-49ee-85e1-abb19a236be1",
-      "subject": "aiwfboawbf",
-      "date": "2026-03-01",
-      "grade": 4,
-      "title": "Klassenarbeit",
+      "title": "Präsentation",
       "locked": false
     },
     {
-      "id": "fb3a9861-6df1-4460-a8b4-50ee0e9be864",
+      "id": "84ff94a0-c127-43f0-ab7c-1b9cd6867ccb",
       "subject": "Netztechnik",
-      "date": "2026-03-01",
-      "grade": 2.5,
-      "title": "Prüfung",
+      "date": "2026-03-02",
+      "grade": 1,
+      "title": "Dokumentation",
       "locked": false
     }
   ]
