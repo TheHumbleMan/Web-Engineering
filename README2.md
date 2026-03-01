@@ -17,11 +17,11 @@ SESSION_SECRET=dein-sehr-langes-zufaelliges-secret-mit-mindestens-32-zeichen
 ## Image Bauen
 
 - In das Projektverzeichnis wechseln
-- ```docker build -t Lernhilfe .```
+- ```docker build -t lernhilfe .```
 
 ## Container Starten
 
-```docker run -p 8080:80 Lernhilfe```
+```docker run -p 8080:80 lernhilfe```
 
 ## Im Browser öffnen
 ```http:localhost:8080```
