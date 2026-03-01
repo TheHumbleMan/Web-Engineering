@@ -6,8 +6,12 @@
     const gradeListEl = document.getElementById("grade-list");
     const graphEl = document.getElementById("graph");
 
-
     if (!listBox || !graphBox || !gradeListEl || !graphEl) return;
+
+    const getCsrf = () => {
+        const m = document.querySelector('meta[name="csrf-token"]');
+        return m ? m.getAttribute('content') : null;
+    };
 
     const makeId = () => {
         if (globalThis.crypto && typeof globalThis.crypto.randomUUID === "function") {
@@ -37,79 +41,108 @@
         el.style.overflow = "auto";
     }
 
-    // ----- Daten -----
-    const grades = [
-        { id: makeId(), subject: "Mathe",    date: "2025-09-10", grade: 3.0, title: "Test: Lineare Funktionen" },
-        { id: makeId(), subject: "Mathe",    date: "2025-10-05", grade: 2.0, title: "Klassenarbeit: Gleichungen" },
-        { id: makeId(), subject: "Mathe",    date: "2025-11-18", grade: 2.3, title: "Kurztest: Ableitungen" },
-        { id: makeId(), subject: "Mathe",    date: "2026-01-20", grade: 1.7, title: "Klassenarbeit: Analysis" },
+    // ----- Data stores -----
+    let subjects = []; // from /api/subjects
+    let grades = [];   // from /api/grades
 
-        { id: makeId(), subject: "Deutsch",  date: "2025-09-22", grade: 2.7, title: "Aufsatz: Analyse" },
-        { id: makeId(), subject: "Deutsch",  date: "2025-10-28", grade: 2.0, title: "Referat: Lyrik" },
-        { id: makeId(), subject: "Deutsch",  date: "2025-12-09", grade: 1.7, title: "Klausur: Interpretation" },
-
-        { id: makeId(), subject: "Englisch", date: "2025-09-15", grade: 2.3, title: "Vocabulary Test" },
-        { id: makeId(), subject: "Englisch", date: "2025-11-03", grade: 1.7, title: "Essay" },
-        { id: makeId(), subject: "Englisch", date: "2026-01-12", grade: 2.0, title: "Listening" },
-
-        { id: makeId(), subject: "Physik",   date: "2025-10-01", grade: 3.3, title: "Test: Bewegung" },
-        { id: makeId(), subject: "Physik",   date: "2025-11-25", grade: 2.7, title: "Kurztest: Kräfte" },
-        { id: makeId(), subject: "Physik",   date: "2026-01-28", grade: 2.0, title: "Klassenarbeit: Energie" },
-    ].slice().sort((a, b) => a.date.localeCompare(b.date));
-
-    const fmtDate = (iso) => new Date(iso + "T00:00:00").toLocaleDateString("de-DE");
-
-    // subject -> array
     const bySubject = new Map();
     function rebuildIndex() {
         bySubject.clear();
+        for (const s of subjects) {
+            bySubject.set(s.name, []);
+        }
         for (const g of grades) {
             if (!bySubject.has(g.subject)) bySubject.set(g.subject, []);
             bySubject.get(g.subject).push(g);
         }
         for (const [_, arr] of bySubject) arr.sort((a, b) => a.date.localeCompare(b.date));
     }
-    rebuildIndex();
 
-    function getSubjects() {
-        return [...bySubject.keys()].sort();
-    }
+    const fmtDate = (iso) => new Date(iso + "T00:00:00").toLocaleDateString("de-DE");
 
-    let activeSubject = getSubjects()[0] ?? "";
+    let activeSubject = "";
 
-    // ----- CRUD -----
-    function addGrade({ subject, date, grade, title }) {
-        grades.push({
-            id: crypto.randomUUID(),
-            subject,
-            date,
-            grade,
-            title,
-        });
-        grades.sort((a, b) => a.date.localeCompare(b.date));
-        rebuildIndex();
-    }
-
-    function deleteGradeById(id) {
-        const idx = grades.findIndex(g => g.id === id);
-        if (idx === -1) return;
-        const removed = grades[idx];
-        grades.splice(idx, 1);
-        rebuildIndex();
-
-        // wenn aktives Fach leer wird -> auf erstes verfügbare Fach springen
-        const data = bySubject.get(activeSubject) ?? [];
-        if (activeSubject === removed.subject && data.length === 0) {
-            activeSubject = getSubjects()[0] ?? "";
+    // ----- Server interactions -----
+    async function loadData() {
+        try {
+            const [sRes, gRes] = await Promise.all([
+                fetch('/api/subjects'),
+                fetch('/api/grades')
+            ]);
+            if (!sRes.ok) throw new Error('Failed to load subjects');
+            if (!gRes.ok) throw new Error('Failed to load grades');
+            subjects = await sRes.json();
+            grades = await gRes.json();
+            rebuildIndex();
+            const keys = [...bySubject.keys()].sort();
+            activeSubject = keys[0] ?? "";
+            renderList();
+            if (activeSubject) renderGraph(activeSubject);
+            else graphEl.innerHTML = "<div style='color:var(--muted)'>Keine Fächer/Daten.</div>";
+        } catch (err) {
+            console.error(err);
+            gradeListEl.innerHTML = "<div style='color:var(--muted)'>Fehler beim Laden der Daten.</div>";
+            graphEl.innerHTML = "<div style='color:var(--muted)'>Fehler beim Laden der Daten.</div>";
         }
     }
 
-    // ----- UI: Grade erstellen -----
+    async function addGradeToServer({ subject, date, grade, title }) {
+        const token = getCsrf();
+        const res = await fetch('/api/grades', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { 'x-csrf-token': token } : {})
+            },
+            body: JSON.stringify({ subject, date, grade, title })
+        });
+        if (!res.ok) throw new Error('Failed to save grade');
+        return res.json();
+    }
+
+    async function deleteGradeOnServer(id) {
+        const token = getCsrf();
+        const res = await fetch(`/api/grades/${encodeURIComponent(id)}`, {
+            method: 'DELETE',
+            headers: {
+                ...(token ? { 'x-csrf-token': token } : {})
+            }
+        });
+        if (!res.ok && res.status !== 204) throw new Error('Failed to delete grade');
+    }
+
+    // ----- CRUD helpers -----
+    async function addGrade({ subject, date, grade, title }) {
+        const created = await addGradeToServer({ subject, date, grade, title });
+        grades.push(created);
+        rebuildIndex();
+    }
+
+    async function deleteGradeById(id) {
+        const idx = grades.findIndex(g => g.id === id);
+        if (idx === -1) return;
+        const removed = grades[idx];
+        try {
+            await deleteGradeOnServer(id);
+            grades.splice(idx, 1);
+            rebuildIndex();
+            // adjust active subject if needed
+            const data = bySubject.get(activeSubject) ?? [];
+            if (activeSubject === removed.subject && data.length === 0) {
+                activeSubject = [...bySubject.keys()].sort()[0] ?? "";
+            }
+        } catch (err) {
+            alert('Fehler beim Löschen der Note');
+            console.error(err);
+        }
+    }
+
+    // ----- UI: Create grade -----
     const externalCreateBtn = document.getElementById("create-grade-btn");
 
     function openCreateDialog(defaultSubject = activeSubject) {
-        const subjects = getSubjects();
-        const s = prompt(`Fach (${subjects.join(", ")}):`, defaultSubject || subjects[0] || "Mathe");
+        const subjNames = [...bySubject.keys()].sort();
+        const s = prompt(`Fach (${subjNames.join(", ")}):`, defaultSubject || subjNames[0] || "Mathe");
         if (s == null) return;
 
         const title = prompt("Titel (z.B. Klassenarbeit / Test):", "Neue Note");
@@ -127,25 +160,28 @@
             return;
         }
 
-        addGrade({ subject: s.trim() || "Unbekannt", date: date.trim(), grade: g, title: title.trim() || "Neue Note" });
-        activeSubject = s.trim() || activeSubject;
-        renderList();
-        renderGraph(activeSubject);
+        addGrade({ subject: s.trim() || "Unbekannt", date: date.trim(), grade: g, title: title.trim() || "Neue Note" })
+            .then(() => {
+                activeSubject = s.trim() || activeSubject;
+                renderList();
+                renderGraph(activeSubject);
+            })
+            .catch(err => { alert('Fehler beim Speichern'); console.error(err); });
     }
 
     if (externalCreateBtn) {
         externalCreateBtn.addEventListener("click", () => openCreateDialog(activeSubject));
     }
 
-    // ----- LISTE -----
+    // ----- LIST -----
     function renderList() {
-        const subjects = getSubjects();
+        const subjectNames = [...bySubject.keys()].sort();
         gradeListEl.innerHTML = "";
         gradeListEl.style.display = "flex";
         gradeListEl.style.flexDirection = "column";
         gradeListEl.style.gap = "10px";
 
-        for (const subject of subjects) {
+        for (const subject of subjectNames) {
             const card = document.createElement("div");
             card.style.border = "1px solid var(--border)";
             card.style.borderRadius = "12px";
@@ -226,11 +262,11 @@
                 right.style.gap = "10px";
 
                 const val = document.createElement("div");
-                val.textContent = g.grade.toFixed(1);
+                val.textContent = Number(g.grade).toFixed(1);
                 val.style.fontWeight = "800";
 
                 const del = document.createElement("button");
-                del.textContent = "✕";
+                del.textContent = "\u2715";
                 del.title = "Note löschen";
                 del.style.padding = "6px 10px";
                 del.style.borderRadius = "10px";
@@ -239,10 +275,11 @@
                     e.stopPropagation(); // nicht gleichzeitig "Anzeigen"
                     const ok = confirm(`Note löschen?\n${subject} – ${g.title} (${fmtDate(g.date)})`);
                     if (!ok) return;
-                    deleteGradeById(g.id);
-                    renderList();
-                    if (activeSubject) renderGraph(activeSubject);
-                    else graphEl.innerHTML = "<div style='color:var(--muted)'>Keine Fächer/Daten mehr.</div>";
+                    deleteGradeById(g.id).then(() => {
+                        renderList();
+                        if (activeSubject) renderGraph(activeSubject);
+                        else graphEl.innerHTML = "<div style='color:var(--muted)'>Keine Fächer/Daten mehr.</div>";
+                    });
                 });
 
                 right.appendChild(val);
@@ -374,7 +411,7 @@
             // Hinweis
             ctx.fillStyle = getComputedStyle(document.body).getPropertyValue("--muted") || "#888";
             ctx.textAlign = "left";
-            ctx.fillText("1.0 = besser (oben)  ·  6.0 = schlechter (unten)", pad.l, h - 6);
+            ctx.fillText("1.0 = besser (oben)  \u00b7  6.0 = schlechter (unten)", pad.l, h - 6);
         };
 
         draw();
@@ -388,6 +425,6 @@
     }
 
     // Init
-    renderList();
-    if (activeSubject) renderGraph(activeSubject);
+    loadData();
 })();
+

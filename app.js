@@ -129,6 +129,11 @@ async function saveUsers(data) {
     await fs.writeFile(USERS_FILE, JSON.stringify(data, null, 2));
 }
 
+async function saveUserData(username, data) {
+    const filePath = path.join(__dirname, "data", "userdata", `${username}.json`);
+    await fs.writeFile(filePath, JSON.stringify(data, null, 2), "utf8");
+}
+
 function requireLogin(req, res, next) {
     if (!req.session.user) {
         return res.redirect("/auth/login?error=access");
@@ -180,9 +185,15 @@ app.get("/subjects/:id", requireLogin, async (req, res)=>{
         return res.redirect("/subjects?error=Subject not found");
     }
 
+    // Compute average grade for this subject from user's grades (if any)
+    const grades = userData.grades || [];
+    const gradesForSubject = grades.filter(g => g.subject === subject.name).map(g => Number(g.grade)).filter(g => Number.isFinite(g));
+    const average = gradesForSubject.length ? (gradesForSubject.reduce((a,b)=>a+b,0) / gradesForSubject.length) : null;
+
     res.render("subject", {
         currentUser: req.session.user,
-        subject: subject
+        subject: subject,
+        average: average
     });
 })
 app.get("/timer", (req, res) => {
@@ -217,6 +228,61 @@ app.get("/api/subjects", requireLogin, async (req, res) => {
         res.status(500).json({ error: "Serverfehler" });
     }
 })
+
+// ----- Grades API (per-user, persisted in userdata/username.json) -----
+app.get("/api/grades", requireLogin, async (req, res) => {
+    const username = req.session.user.username;
+    try {
+        const userData = await loadUserData(username);
+        res.json(userData.grades || []);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Serverfehler" });
+    }
+});
+
+app.post("/api/grades", requireLogin, async (req, res) => {
+    const username = req.session.user.username;
+    const { subject, date, grade, title } = req.body;
+    if (!subject || !date || typeof grade === 'undefined' || !title) {
+        return res.status(400).json({ error: "Missing fields" });
+    }
+    try {
+        const userData = await loadUserData(username);
+        userData.grades = userData.grades || [];
+        const newGrade = {
+            id: crypto.randomUUID(),
+            subject: String(subject),
+            date: String(date),
+            grade: Number(grade),
+            title: String(title)
+        };
+        userData.grades.push(newGrade);
+        await saveUserData(username, userData);
+        res.status(201).json(newGrade);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Serverfehler" });
+    }
+});
+
+app.delete("/api/grades/:id", requireLogin, async (req, res) => {
+    const username = req.session.user.username;
+    const id = req.params.id;
+    try {
+        const userData = await loadUserData(username);
+        userData.grades = userData.grades || [];
+        const idx = userData.grades.findIndex(g => g.id === id);
+        if (idx === -1) return res.status(404).json({ error: "Not found" });
+        userData.grades.splice(idx, 1);
+        await saveUserData(username, userData);
+        res.sendStatus(204);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Serverfehler" });
+    }
+});
+
 app.get("/grades", requireLogin, async (req, res) => {
     const userData = await loadUserData(req.session.user.username);
 
@@ -269,7 +335,8 @@ app.post("/auth/register", async (req, res) => {
 
     const userFilePath = path.join(__dirname, "data", "userdata", `${cleanUsername}.json`);
     const defaultUserData = {
-        subjects: []
+        subjects: [],
+        grades: []
     };
 
     try {

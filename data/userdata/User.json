@@ -30,5 +30,14 @@
         }
       ]
     }
+  ],
+  "grades": [
+    {
+      "id": "1e8d4520-c27f-498c-9f7e-c5dfe583128e",
+      "subject": "aiwfboawbf",
+      "date": "2026-03-01",
+      "grade": 2,
+      "title": "3"
+    }
   ]
 }

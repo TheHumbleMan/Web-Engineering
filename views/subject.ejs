@@ -13,7 +13,7 @@
 <body>
 <header>
     <nav>
-        <a href="google.com">Notenübersicht</a>
+        <a href="/grades">Notenübersicht</a>
         <a href="/todo">Lernplan</a>
         <a href="subjects">Zurück zur Übersicht </a>
         <a href="/auth/login">Abmelden</a>
@@ -32,6 +32,11 @@
 <main>
     <div class="top-banner">
         <h1 id="name"><%= subject.name %></h1>
+        <% if (typeof average !== 'undefined' && average !== null) { %>
+            <div class="subject-average">Durchschnittsnote: <strong><%= average.toFixed(2) %></strong></div>
+        <% } else { %>
+            <div class="subject-average muted">Keine Noten vorhanden</div>
+        <% } %>
 
         <button id="saveSubjectBtn">Speichern</button>
         <!-- Lösch-Formular -->
