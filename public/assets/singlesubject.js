@@ -165,10 +165,8 @@ function updateSessionStorage() {
 const container = document.getElementById("todos-container"); // Parent aller Todos
 container.addEventListener("change", (e) => {
     if (!e.target.matches('input[type="checkbox"]')) {
-        console.log("Nicht Checkbox, Ignoriere Event");
         return;
     }
-    console.log("Checkbox geändert:", e.target.id, "Checked:", e.target.checked);
     const subjectId = window.location.pathname.split("/").pop();
     const checkbox = e.target;
     const todoId = checkbox.id.replace("checkbox-", "");
@@ -183,12 +181,9 @@ container.addEventListener("change", (e) => {
         return
     }
 
-    console.log("Checkbox:" + checkbox)
     // done toggeln muss im DOM gemacht werden
     const todoTextElement = checkbox.nextElementSibling;
-    console.log("Todo Text Element:", todoTextElement);
     const newDoneValue = todo.done === "false" ? "true" : "false";
-    console.log("Neuer done Wert:", newDoneValue);
     todoTextElement.dataset.done = newDoneValue;
 
     updateSessionStorage();
