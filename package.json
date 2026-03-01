@@ -2,8 +2,10 @@
   "name": "webengineeringproject",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "docs": "jsdoc app.js public/assets -d docs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "private": true,
@@ -17,5 +19,8 @@
     "ejs": "^4.0.1",
     "express": "^5.2.1",
     "express-session": "^1.18.0"
+  },
+  "devDependencies": {
+    "jsdoc": "^4.0.5"
   }
 }

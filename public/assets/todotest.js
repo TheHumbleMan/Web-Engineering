@@ -1,3 +1,18 @@
+/**
+ * @file todotest.js
+ * @description JavaScript für die Todo-Test-Seite der Lernhilfe-WebApp.
+ * Verwaltet das Anzeigen und Testen von Todos.
+ */
+
+/**
+ * Rendert alle Todos in der Todo-Übersicht.
+ * 
+ * @param {Array<Object>} todos - Array von Todo-Objekten mit Feldern:
+ *   - text {string}: Name des Todos
+ *   - prio {string}: Priorität ("hoch", "mittel", "niedrig")
+ *   - done {string}: Status "true" oder "false"
+ *   - dueDate {string}: Fälligkeitsdatum im ISO-Format oder leer
+ */
 function renderTodos(todos) {
     const container = document.getElementById("todo-block");
     if (!container) return;
@@ -38,6 +53,11 @@ function renderTodos(todos) {
     }
 }
 
+/**
+ * Parst ein deutsches Datumsformat "TT.MM.JJJJ" in ein Date-Objekt.
+ * @param {string} dateStr - Datumsstring im deutschen Format
+ * @returns {Date|null} Parsed Date oder null bei ungültigem Format
+ */
 function parseGermanDate(dateStr) {
     if (!dateStr) return null;
 
@@ -54,6 +74,11 @@ function parseGermanDate(dateStr) {
     return new Date(year, month - 1, day);
 }
 
+/**
+ * Berechnet die verbleibende Zeit bis zum gegebenen Timestamp.
+ * @param {number} deadlineTs - Timestamp der Deadline in Millisekunden
+ * @returns {string} Verbleibende Zeit im Format "Xd Xh Xm" oder "abgelaufen"
+ */
 function calculateRemaining(deadlineTs) {
     const diff = deadlineTs - Date.now();
     if (diff <= 0) return "abgelaufen";
@@ -65,6 +90,10 @@ function calculateRemaining(deadlineTs) {
     return `${days}d ${hours}h ${mins}m`;
 }
 
+/**
+ * Rendert die Timeline mit Markern für alle Todos.
+ * @param {Array<Object>} todos - Array von Todo-Objekten
+ */
 function renderTimeline(todos) {
     const markersHost = document.getElementById("tl-markers");
     if (!markersHost) return;
@@ -113,22 +142,17 @@ function renderTimeline(todos) {
     }
 }
 
+/**
+ * Aktualisiert die aktuelle Uhrzeit im DOM.
+ */
 function tickTime() {
     const t = document.getElementById("time-span");
     if (t) t.textContent = new Date().toLocaleString("de-DE");
 }
 
-setInterval(async () => {
-    renderTodos(await loadAllTodos());
-    renderTimeline(await loadAllTodos());
-}, 60_000);
-
-setInterval(tickTime, 1000);
-
 /**
- * Funktion die alle Subjects für den aktuellen Benutzer aus dem Backend lädt,
- * alle Todos daraus extrahiert, und nach dueDate sortiert zurückgibt
- * @returns Array von Todos mit zusätzlichen Feld "subject" für den Namen des Fachs
+ * Lädt alle Todos aller Subjects für den aktuellen Benutzer aus dem Backend.
+ * @returns {Promise<Array<Object>|undefined>} Array von Todos mit Feld "subject" oder undefined bei Fehler
  */
 async function loadAllTodos() {
     try {
@@ -137,7 +161,7 @@ async function loadAllTodos() {
             console.error("Fehler beim Laden der Todos:", await res.text());
             return;
         }
-
+        
         const subjects = await res.json();
         //alle todos aus den subjects extrahieren und nach dueDate sortieren
         const allTodos = subjects.flatMap(s => s.todos.map(t => ({ ...t, subject: s.name })));
@@ -149,7 +173,16 @@ async function loadAllTodos() {
     }
 }
 
-// Beim Laden der Seite alle Todos laden und anzeigen
+//Intervall zum regelmäßigen Aktualisieren der Todos und der Timeline
+setInterval(async () => {
+    renderTodos(await loadAllTodos());
+    renderTimeline(await loadAllTodos());
+}, 60_000);
+
+//Intervall zum Aktualisieren der aktuellen Uhrzeit
+setInterval(tickTime, 1000);
+
+// Initiales Laden der Seite
 document.addEventListener('DOMContentLoaded', async () => {
     const allTodos = await loadAllTodos();
     renderTodos(allTodos);

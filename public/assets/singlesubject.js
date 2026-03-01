@@ -1,7 +1,24 @@
 /**
- * Sobald die Seite erstmals gerendert wurde, werden sämtliche
- * Einträge ins Prüfungsdatum, Note, oder den Notiz block im sessionStorage
- * zwischengespeichert
+ * @file singlesubject.js
+ * @description JavaScript für die Einzelsubject-Seite der Lernhilfe-WebApp.
+ * Verwaltet die Anzeige und Speicherung von Prüfungsdatum, Notizen und Todos.
+ */
+
+/**
+ * Script für SessionStorage-Synchronisierung und Todo-Management
+ * 
+ * Dieses Skript übernimmt:
+ * - Zwischenspeicherung von Prüfungsdatum, Notizen und Todos im sessionStorage
+ * - Übertragung der Daten per POST auf den Server
+ * - Erstellung, Anzeige und Verwaltung von Todos inklusive Priorität und Fälligkeitsdatum
+ * - Interaktive Checkboxen zum Abhaken von Todos
+ */
+
+/**
+ * Event: DOMContentLoaded
+ * 
+ * Sobald die Seite vollständig geladen ist, werden Event-Listener für die Eingabefelder
+ * "examDate" und "note-textarea" gesetzt, um Änderungen automatisch im sessionStorage zu speichern.
  */
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("examDate").addEventListener("change", updateSessionStorage);
@@ -9,8 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 /**
- * Speichern knopf: die aktell im sessionStorage gespeicherten daten werden
- * in die Serverseitige JSON überführt
+ * Speichern-Button
+ * 
+ * Überträgt die aktuell im sessionStorage gespeicherten Daten in die Serverseitige JSON via POST.
  */
 const saveBtn = document.getElementById("saveSubjectBtn");
 saveBtn.addEventListener("click", async () => {
@@ -36,24 +54,51 @@ saveBtn.addEventListener("click", async () => {
     }
 });
 
+
 /**
- * Neues Todo Button: das Popup zur todo erstellung wird sichtbar gemacht
+ * Neues Todo erstellen
+ * 
+ * Öffnet das Popup-Fenster zur Erstellung eines neuen Todos.
  */
 const addTodoBtn = document.getElementById("addTodo");
 addTodoBtn.addEventListener("click", ()=> openPopup())
+
+/** 
+ * Container-Element für Todos
+ * @type {HTMLElement} 
+ */
 const todosContainer = document.getElementById("todos-container");
+
+/**
+ * Popup-Fenster für Todo-Eingabe
+ * @type {HTMLElement}
+ */
 const popup = document.getElementById("todoPopup");
 
+/**
+ * Öffnet das Popup-Fenster
+ * @function
+ * @returns {void}
+ */
 function openPopup() {
     popup.style.display = "block";
 }
+
+/**
+ * Schließt das Popup-Fenster
+ * @function
+ * @returns {void}
+ */
 function closePopup() {
     popup.style.display = "none";
 }
 
 /**
- * Hilfsfunktion die basierend auf den Eingaben im Popup-fenster ein
- * entsprechendes Todo erstellt,rendert und in sessionStorage schreibt
+ * Erstellt ein neues Todo basierend auf den Eingaben im Popup-Fenster,
+ * rendert es im DOM und speichert es im sessionStorage.
+ * 
+ * @function
+ * @returns {void}
  */
 function submitTodo() {
     const todoID = `todo${Date.now()}`;
@@ -86,9 +131,13 @@ function submitTodo() {
     updateSessionStorage();
 }
 
+
 /**
- * Hilffunction die die aktuell Sichtbaren eingaben in SessionStorage im gleichen
- * Format wie in der Serverseitigen JSON speichert
+ * Aktualisiert den sessionStorage mit allen aktuellen Eingaben
+ * für ein Fach inklusive Todos.
+ * 
+ * @function
+ * @returns {void}
  */
 function updateSessionStorage() {
     const subjectId = window.location.pathname.split("/").pop();
@@ -107,8 +156,13 @@ function updateSessionStorage() {
     sessionStorage.setItem(subjectId, JSON.stringify(subjectData));
 }
 
+/**
+ * Event-Listener auf den Todos-Container
+ * 
+ * Toggelt den "done"-Status eines Todos, wenn eine Checkbox geändert wird,
+ * und aktualisiert den sessionStorage.
+ */
 const container = document.getElementById("todos-container"); // Parent aller Todos
-
 container.addEventListener("change", (e) => {
     if (!e.target.matches('input[type="checkbox"]')) {
         console.log("Nicht Checkbox, Ignoriere Event");

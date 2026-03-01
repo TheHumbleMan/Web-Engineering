@@ -1,6 +1,0 @@
-function startTimer(){
-
-}
-function stopTimer(){
-
-}
